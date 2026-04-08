@@ -1,32 +1,13 @@
 extends Node
 
-# ─── ESTRUCTURA DE UN ENEMIGO ─────────────────────────────────────────────────
-# {
-#   "id": String,
-#   "name": String,
-#   "class": String,
-#   "vida": int,
-#   "fuerza": int,
-#   "mana": int,
-#   "suerte": int,
-#   "attack_speed": float,
-#   "hit_chance": float,
-#   "skill_1_id": String,   # vacío si no tiene
-#   "skill_2_id": String,
-#   "is_boss": bool,
-#   "xp_reward": int,
-# }
-
-# ─── CAPÍTULO 1 ───────────────────────────────────────────────────────────────
-
 const CHAPTER_1 = {
 	"level_1": [
 		{
 			"id": "goblin_1",
 			"name": "Goblin",
 			"class": "picaro",
-			"vida": 40,
-			"fuerza": 8,
+			"vida": 280,
+			"fuerza": 18,
 			"mana": 0,
 			"suerte": 10,
 			"attack_speed": 1.2,
@@ -40,8 +21,8 @@ const CHAPTER_1 = {
 			"id": "goblin_2",
 			"name": "Goblin Arquero",
 			"class": "arquero",
-			"vida": 30,
-			"fuerza": 10,
+			"vida": 220,
+			"fuerza": 22,
 			"mana": 0,
 			"suerte": 15,
 			"attack_speed": 1.0,
@@ -55,8 +36,8 @@ const CHAPTER_1 = {
 			"id": "goblin_3",
 			"name": "Goblin Bruto",
 			"class": "guerrero",
-			"vida": 60,
-			"fuerza": 12,
+			"vida": 380,
+			"fuerza": 25,
 			"mana": 0,
 			"suerte": 5,
 			"attack_speed": 2.0,
@@ -72,8 +53,8 @@ const CHAPTER_1 = {
 			"id": "orc_1",
 			"name": "Orco",
 			"class": "guerrero",
-			"vida": 80,
-			"fuerza": 15,
+			"vida": 480,
+			"fuerza": 30,
 			"mana": 0,
 			"suerte": 5,
 			"attack_speed": 2.2,
@@ -87,8 +68,8 @@ const CHAPTER_1 = {
 			"id": "orc_2",
 			"name": "Orco Chamán",
 			"class": "mago",
-			"vida": 50,
-			"fuerza": 8,
+			"vida": 320,
+			"fuerza": 18,
 			"mana": 20,
 			"suerte": 10,
 			"attack_speed": 2.5,
@@ -102,8 +83,8 @@ const CHAPTER_1 = {
 			"id": "orc_3",
 			"name": "Orco Explorador",
 			"class": "arquero",
-			"vida": 45,
-			"fuerza": 14,
+			"vida": 300,
+			"fuerza": 28,
 			"mana": 0,
 			"suerte": 18,
 			"attack_speed": 1.1,
@@ -119,8 +100,8 @@ const CHAPTER_1 = {
 			"id": "chapter1_boss",
 			"name": "Jefe de la Horda",
 			"class": "guerrero",
-			"vida": 400,
-			"fuerza": 25,
+			"vida": 2500,
+			"fuerza": 45,
 			"mana": 10,
 			"suerte": 10,
 			"attack_speed": 1.8,
@@ -133,16 +114,14 @@ const CHAPTER_1 = {
 	],
 }
 
-# ─── CAPÍTULO 2 (placeholder) ─────────────────────────────────────────────────
-
 const CHAPTER_2 = {
 	"level_1": [
 		{
 			"id": "skeleton_1",
 			"name": "Esqueleto",
 			"class": "guerrero",
-			"vida": 70,
-			"fuerza": 18,
+			"vida": 520,
+			"fuerza": 35,
 			"mana": 0,
 			"suerte": 8,
 			"attack_speed": 1.6,
@@ -156,8 +135,8 @@ const CHAPTER_2 = {
 			"id": "skeleton_2",
 			"name": "Arquero Esqueleto",
 			"class": "arquero",
-			"vida": 55,
-			"fuerza": 20,
+			"vida": 400,
+			"fuerza": 38,
 			"mana": 0,
 			"suerte": 20,
 			"attack_speed": 1.0,
@@ -171,8 +150,8 @@ const CHAPTER_2 = {
 			"id": "necromancer_1",
 			"name": "Necromántico",
 			"class": "mago",
-			"vida": 60,
-			"fuerza": 10,
+			"vida": 380,
+			"fuerza": 20,
 			"mana": 35,
 			"suerte": 12,
 			"attack_speed": 2.8,
@@ -188,8 +167,8 @@ const CHAPTER_2 = {
 			"id": "skeleton_knight",
 			"name": "Caballero Esqueleto",
 			"class": "guerrero",
-			"vida": 120,
-			"fuerza": 22,
+			"vida": 750,
+			"fuerza": 42,
 			"mana": 0,
 			"suerte": 8,
 			"attack_speed": 1.9,
@@ -203,8 +182,8 @@ const CHAPTER_2 = {
 			"id": "banshee",
 			"name": "Fantasma",
 			"class": "mago",
-			"vida": 65,
-			"fuerza": 12,
+			"vida": 480,
+			"fuerza": 25,
 			"mana": 40,
 			"suerte": 25,
 			"attack_speed": 1.4,
@@ -220,8 +199,8 @@ const CHAPTER_2 = {
 			"id": "chapter2_boss",
 			"name": "El Rey Liche",
 			"class": "mago",
-			"vida": 700,
-			"fuerza": 20,
+			"vida": 5500,
+			"fuerza": 55,
 			"mana": 60,
 			"suerte": 20,
 			"attack_speed": 2.0,
@@ -233,8 +212,6 @@ const CHAPTER_2 = {
 		},
 	],
 }
-
-# ─── ACCESO POR CAPÍTULO Y NIVEL ──────────────────────────────────────────────
 
 const ALL_CHAPTERS = [CHAPTER_1, CHAPTER_2]
 

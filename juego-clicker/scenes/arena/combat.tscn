@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://b2o6r8dkxpmst"]
+
+[ext_resource type="Script" uid="uid://ddrqq0trkvn6f" path="res://scenes/arena/combat.gd" id="1_c0l0e"]
+[ext_resource type="Script" uid="uid://csl1toixmose2" path="res://scripts/arena/CombatManager.gd" id="2_16qph"]
+
+[node name="Combat" type="Control" unique_id=1493760157]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_c0l0e")
+
+[node name="CombatManager" type="Node" parent="." unique_id=1088819422]
+script = ExtResource("2_16qph")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=464122415]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="PlayerSide" type="VBoxContainer" parent="HBoxContainer" unique_id=541010802]
+layout_mode = 2
+
+[node name="PlayerSlot1" type="VBoxContainer" parent="HBoxContainer/PlayerSide" unique_id=921850427]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/PlayerSide/PlayerSlot1" unique_id=1572076301]
+layout_mode = 2
+text = "Juan"
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/PlayerSide/PlayerSlot1" unique_id=2104071004]
+layout_mode = 2
+
+[node name="Skill1Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot1" unique_id=747965358]
+layout_mode = 2
+
+[node name="Skill2Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot1" unique_id=1285488541]
+layout_mode = 2
+
+[node name="PlayerSlot2" type="VBoxContainer" parent="HBoxContainer/PlayerSide" unique_id=275316964]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/PlayerSide/PlayerSlot2" unique_id=380355356]
+layout_mode = 2
+text = "Luis"
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/PlayerSide/PlayerSlot2" unique_id=673548947]
+layout_mode = 2
+
+[node name="Skill1Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot2" unique_id=1199273463]
+layout_mode = 2
+
+[node name="Skill2Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot2" unique_id=26415365]
+layout_mode = 2
+
+[node name="PlayerSlot3" type="VBoxContainer" parent="HBoxContainer/PlayerSide" unique_id=512103878]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/PlayerSide/PlayerSlot3" unique_id=822301919]
+layout_mode = 2
+text = "Enrique"
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/PlayerSide/PlayerSlot3" unique_id=135376194]
+layout_mode = 2
+
+[node name="Skill1Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot3" unique_id=306560392]
+layout_mode = 2
+
+[node name="Skill2Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot3" unique_id=1253203096]
+layout_mode = 2
+
+[node name="PlayerSlot4" type="VBoxContainer" parent="HBoxContainer/PlayerSide" unique_id=534070587]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/PlayerSide/PlayerSlot4" unique_id=1544273743]
+layout_mode = 2
+text = "Oscar"
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/PlayerSide/PlayerSlot4" unique_id=93787216]
+layout_mode = 2
+
+[node name="Skill1Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot4" unique_id=1511440483]
+layout_mode = 2
+
+[node name="Skill2Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot4" unique_id=1242096404]
+layout_mode = 2
+
+[node name="PlayerSlot5" type="VBoxContainer" parent="HBoxContainer/PlayerSide" unique_id=203415229]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/PlayerSide/PlayerSlot5" unique_id=667584016]
+layout_mode = 2
+text = "Carlos"
+
+[node name="ProgressBar" type="ProgressBar" parent="HBoxContainer/PlayerSide/PlayerSlot5" unique_id=234835186]
+layout_mode = 2
+
+[node name="Skill1Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot5" unique_id=1468009471]
+layout_mode = 2
+
+[node name="Skill2Button" type="Button" parent="HBoxContainer/PlayerSide/PlayerSlot5" unique_id=952193145]
+layout_mode = 2
+
+[node name="EnemySide" type="VBoxContainer" parent="HBoxContainer" unique_id=1093924239]
+layout_mode = 2
+
+[node name="EnemySlot1" type="VBoxContainer" parent="HBoxContainer/EnemySide" unique_id=1056662951]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/EnemySide/EnemySlot1" unique_id=2055153300]
+layout_mode = 2
+text = "Wolf"
+
+[node name="HPBar" type="ProgressBar" parent="HBoxContainer/EnemySide/EnemySlot1" unique_id=333731938]
+layout_mode = 2
+
+[node name="EnemySlot3" type="VBoxContainer" parent="HBoxContainer/EnemySide" unique_id=1512310770]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/EnemySide/EnemySlot3" unique_id=1386663691]
+layout_mode = 2
+text = "Dog"
+
+[node name="HPBar" type="ProgressBar" parent="HBoxContainer/EnemySide/EnemySlot3" unique_id=1060034411]
+layout_mode = 2
+
+[node name="EnemySlot2" type="VBoxContainer" parent="HBoxContainer/EnemySide" unique_id=833034353]
+layout_mode = 2
+
+[node name="NameLabel" type="Label" parent="HBoxContainer/EnemySide/EnemySlot2" unique_id=1742093215]
+layout_mode = 2
+text = "Dog"
+
+[node name="HPBar" type="ProgressBar" parent="HBoxContainer/EnemySide/EnemySlot2" unique_id=754044420]
+layout_mode = 2
+
+[node name="CombatLog" type="RichTextLabel" parent="." unique_id=2009318410]
+layout_mode = 0
+offset_left = 86.0
+offset_top = 216.0
+offset_right = 126.0
+offset_bottom = 256.0

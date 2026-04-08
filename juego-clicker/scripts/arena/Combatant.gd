@@ -124,8 +124,7 @@ func _execute_basic_attack() -> void:
 	emit_signal("attack_landed", self, damage, false)
 
 func _calculate_basic_damage() -> int:
-	# Fórmula base: fuerza * 0.8, con ±10% de varianza
-	var base: float = character.fuerza_base * 0.8
+	var base: float = character.fuerza_base * 0.3  # antes 0.8
 	var variance: float = base * 0.1
 	return max(1, int(base + randf_range(-variance, variance)))
 
@@ -168,3 +167,5 @@ func receive_damage(amount: int) -> void:
 	var real = character.take_damage(amount)
 	if not character.is_alive():
 		emit_signal("died", self)
+
+var is_boss: bool = false

@@ -27,14 +27,15 @@ const RARITY_POWER_MULTIPLIER = {
 	"milagro":    2.00,
 }
 
+# Subir puntos base por rareza — la vida escala mucho más
 const RARITY_BASE_POINTS = {
-	"comun":      100,
-	"especial":   130,
-	"raro":       165,
-	"epico":      205,
-	"mitico":     250,
-	"legendario": 300,
-	"milagro":    360,
+	"comun":      300,   # antes 100
+	"especial":   400,   # antes 130
+	"raro":       520,   # antes 165
+	"epico":      650,   # antes 205
+	"mitico":     820,   # antes 250
+	"legendario": 1000,  # antes 300
+	"milagro":    1200,  # antes 360
 }
 
 const SKILL_TIER_MIN_RARITY = {
@@ -66,11 +67,11 @@ const CROSS_CLASS_POOL = {
 const CLASSES = ["guerrero", "mago", "picaro", "sanador", "arquero"]
 
 const CLASS_STAT_WEIGHTS = {
-	"guerrero": { "vida": 0.45, "fuerza": 0.35, "mana": 0.10, "suerte": 0.10 },
-	"mago":     { "vida": 0.20, "fuerza": 0.10, "mana": 0.50, "suerte": 0.20 },
-	"picaro":   { "vida": 0.20, "fuerza": 0.30, "mana": 0.10, "suerte": 0.40 },
-	"sanador":  { "vida": 0.25, "fuerza": 0.05, "mana": 0.40, "suerte": 0.30 },
-	"arquero":  { "vida": 0.20, "fuerza": 0.30, "mana": 0.10, "suerte": 0.40 },
+	"guerrero": { "vida": 0.55, "fuerza": 0.25, "mana": 0.10, "suerte": 0.10 },
+	"mago":     { "vida": 0.30, "fuerza": 0.08, "mana": 0.45, "suerte": 0.17 },
+	"picaro":   { "vida": 0.30, "fuerza": 0.28, "mana": 0.08, "suerte": 0.34 },
+	"sanador":  { "vida": 0.35, "fuerza": 0.05, "mana": 0.38, "suerte": 0.22 },
+	"arquero":  { "vida": 0.30, "fuerza": 0.28, "mana": 0.08, "suerte": 0.34 },
 }
 
 const RARITY_MAX_FOCUS = {
