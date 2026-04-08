@@ -1,4 +1,4 @@
-# 🎮 [Nombre del juego]
+# [Nombre del juego]
 
 > Clicker idle con gacha, arena roguelite y mercado jugador-a-jugador.  
 > Desarrollado en **Godot 4.6.2** (Compatibility Renderer) · PC y móvil · Backend: Firebase
@@ -14,6 +14,7 @@
   - [Arena](#arena)
   - [Mercado](#mercado)
 - [Arquitectura técnica](#arquitectura-técnica)
+- [Estado de implementación](#estado-de-implementación)
 - [Roadmap](#roadmap)
 - [Estructura del proyecto](#estructura-del-proyecto)
 - [Contribuir / Issues](#contribuir--issues)
@@ -44,8 +45,8 @@ El juego tiene **dos monedas independientes** que no se pueden convertir entre s
 
 | Moneda | Cómo se obtiene | Para qué sirve |
 |--------|----------------|----------------|
-| 🔵 Bolas azules | Haciendo click en el menú principal | Gacha, tiendas básicas del juego |
-| 🟡 Monedas doradas | Vendiendo personajes en el Mercado | Comprar en el Mercado |
+| Bolas azules | Haciendo click en el menú principal | Gacha, tiendas básicas del juego |
+| Monedas doradas | Vendiendo personajes en el Mercado | Comprar en el Mercado |
 
 #### Rebirths
 
@@ -64,6 +65,13 @@ Al acumular suficientes bolas azules se puede hacer un **Rebirth**: resetea las 
 
 Hay **4500 personajes** distribuidos en 7 rarezas. Las rarezas altas tienen kits más complejos y stats base superiores.
 
+#### Costes de invocación
+
+| Tipo | Coste |
+|------|-------|
+| Invocar ×1 | 800 bolas azules |
+| Invocar ×10 | 7200 bolas azules |
+
 #### Rarezas y probabilidades
 
 | Rareza | Pool | Probabilidad |
@@ -76,7 +84,7 @@ Hay **4500 personajes** distribuidos en 7 rarezas. Las rarezas altas tienen kits
 | Legendario | 200 pjs | 1.5% |
 | Milagro | 50 pjs | 0.5% |
 
-> **Pity system:** A las 80 tiradas sin Legendario+, se garantiza uno. A las 160, se garantiza Milagro.
+> **Pity system:** A las 200 tiradas sin Legendario+, se garantiza uno.
 
 #### Estadísticas base
 
@@ -91,6 +99,20 @@ Todos los personajes tienen cuatro stats: **Vida · Fuerza · Mana · Suerte**
 | Pícaro | DPS burst, críticos | Suerte |
 | Sanador | Soporte, cura y buffs | Mana + Suerte |
 | Arquero | DPS a distancia, debuffs | Suerte + Fuerza |
+
+#### Personajes únicos
+
+Los personajes únicos son diseñados a mano con stats y mecánicas exclusivas. Tienen una probabilidad de aparecer en los pulls de su rareza correspondiente.
+
+| ID | Rareza | Clase | Mecánica especial |
+|----|--------|-------|------------------|
+| Luckas | Milagro | Pícaro | Luck Barrage (4–8 hits según suerte) · Overwhelming Luck (invulnerabilidad + regen) · Gambler's Edge (pasiva: +5 suerte por barrage máximo) |
+
+#### Habilidades
+
+Hay **32 habilidades** distribuidas en 5 clases y múltiples tiers de rareza. Cada personaje tiene hasta dos slots de habilidad activa y una pasiva (desbloqueable al llegar a nivel 60).
+
+Las habilidades cubren: daño directo, daño en área, curación, escudos, stun, evasión, regeneración, reducción de daño, y efectos acumulables.
 
 #### Progresión de personajes
 
@@ -116,9 +138,16 @@ Cada capítulo sigue el patrón: **Nivel normal → Nivel normal → Boss**
 
 Completar el boss de un capítulo desbloquea el siguiente y **aumenta la energía máxima** del jugador de forma equivalente al coste del capítulo.
 
+#### Capítulos implementados
+
+| Capítulo | Nivel 1 | Nivel 2 | Boss |
+|----------|---------|---------|------|
+| 1 | Goblins | Orcos | Líder de la Horda Orca (2500 HP) |
+| 2 | Esqueletos / Nigromantes | Caballeros Esqueleto / Banshee | Rey Liche (5500 HP) |
+
 #### Combate semi-automático
 
-Los personajes atacan solos con IA básica. El jugador ve los **cooldowns de habilidades** de sus 5 personajes en pantalla y decide cuándo activarlas manualmente.
+Los personajes atacan solos con IA básica. El juego es de **acción continua** (no por turnos): cada combatiente tiene su propio temporizador de ataque independiente. El jugador ve los **cooldowns de habilidades** de sus 5 personajes en pantalla y decide cuándo activarlas manualmente. También puede asignar objetivos manualmente haciendo click en un enemigo.
 
 Los clicks durante el combate generan **energía de habilidad** (recurso separado, se gasta en el combate y no en el menú principal).
 
@@ -165,18 +194,34 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 - Compresión de texturas: ETC2 (Android), BPTC (PC).
 - Sin `SubViewport` innecesarios en móvil.
 
-### Escenas principales
+### Scripts principales
 
-| Escena | Descripción |
-|--------|-------------|
-| `Main.tscn` | Hub con pestañas: Clicker, Gacha, Arena, Mercado |
-| `Clicker.tscn` | Botón principal, contadores, rebirth |
-| `Gacha.tscn` | Animación de invocación, colección |
-| `Arena.tscn` | Selección de equipo, capítulos |
-| `Combat.tscn` | Instanciada durante pelea. 5 slots + enemigos + HUD de habilidades |
-| `Market.tscn` | Búsqueda, listados, panel de venta, wallet |
-| `Character.gd` | Resource con todos los datos del personaje |
-| `FirebaseManager.gd` | Autoload singleton. Auth, lecturas, escrituras, validaciones |
+| Archivo | Descripción |
+|---------|-------------|
+| `autoloads/GameState.gd` | Singleton global. Estado de sesión, economía, roster, arena, gacha, energía |
+| `autoloads/GameData.gd` | Constantes y tablas de datos: rarezas, skills, clases, escalado, costes |
+| `autoloads/Firebase.gd` | Auth anónima, Firestore REST, validación de clicks, mercado |
+| `scripts/resources/Character.gd` | Resource con todos los datos del personaje (stats, XP, muerte, serialización) |
+| `scripts/characters/CharacterFactory.gd` | Generación procedural de personajes (nombre, stats, skills) |
+| `scripts/characters/UniqueCharacters.gd` | Roster de personajes únicos diseñados a mano |
+| `scripts/arena/CombatManager.gd` | Orquestador de combate: targeting, skills, XP, muerte permanente |
+| `scripts/arena/Combatant.gd` | Wrapper de combate con timers, efectos de estado, cooldowns |
+| `scripts/arena/EnemyData.gd` | Datos estáticos de enemigos por capítulo y nivel |
+| `scripts/arena/SkillsGeneric.gd` | Motor de ejecución de habilidades genéricas |
+| `scripts/arena/SkillsUnique.gd` | Handlers de habilidades únicas (Luckas, etc.) |
+| `scenes/gacha/Gacha.gd` | UI de invocación: botones, resultado, estado de bolas |
+| `scenes/arena/combat.gd` | UI de combate: slots, barras de HP, log, targeting manual |
+| `scripts/clicker/clicker.gd` | UI del clicker: botón principal, contador de bolas |
+
+### Escenas Godot
+
+| Escena | Estado |
+|--------|--------|
+| `scenes/clicker/Clicker.tscn` | Implementada |
+| `scenes/arena/combat.tscn` | Implementada |
+| `scenes/gacha/Gacha.tscn` | Pendiente (script listo) |
+| `scenes/market/Market.tscn` | Pendiente |
+| `Main.tscn` | Pendiente |
 
 ### Colecciones Firebase
 
@@ -190,50 +235,95 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 
 ---
 
+## Estado de implementación
+
+### Completamente implementado
+
+- Click con batching y validación antitrampas
+- Gacha con 7 rarezas, pity, habilidades cross-class
+- Generación procedural de personajes (nombre, stats, habilidades)
+- Un personaje único: Luckas (mecánicas propias de suerte)
+- Progresión de personajes: XP, niveles, muerte permanente
+- Combate de acción continua con targeting manual y sistema de habilidades
+- 32 habilidades con efectos completos (stun, shields, regen, evasión, etc.)
+- Sistema de energía con reset semanal y degradación de XP
+- Arena: 2 capítulos, 2 niveles + 1 boss cada uno (6 encuentros)
+- Firebase: auth, sincronización, validación de clicks, mercado
+- UI: Clicker, Gacha (script), Combate
+
+### Implementado parcialmente
+
+- **Pasivas de personaje**: el campo `passive_id` existe, la lógica de activación no
+- **Stat secundaria (nivel 15)**: el umbral está definido, no se aplica en combate
+- **Escena de gacha**: script listo, falta el `.tscn`
+
+### Pendiente
+
+- Escena de mercado (UI)
+- Escena principal / hub de navegación
+- Personajes únicos adicionales (solo existe Luckas)
+- Capítulos 3 en adelante
+- Arte de personajes y UI (carpetas `assets/` vacías)
+- Audio
+- Port móvil
+
+---
+
 ## Roadmap
 
-| Fase | Contenido | Milestone |
-|------|-----------|-----------|
-| 1 | Clicker base · economía azules · Firebase auth · antitrampas | M1 |
-| 2 | Sistema de personajes (Resource) · gacha con probabilidades y animación | M2 |
-| 3 | Arena: capítulos 1–3 · combate semi-auto · muerte permanente · stamina | M3 |
-| 4 | Mercado: Firestore listings · filtros · transacciones · wallet doradas | M4 |
-| 5 | Pulido: pity system · rebirth · XP degradado · balanceo de stats | M5 |
-| 6 | Port móvil: UI responsive · touch events · compresión texturas · testing | M6 |
+| Fase | Contenido | Estado |
+|------|-----------|--------|
+| 1 | Clicker base · economía azules · Firebase auth · antitrampas | Completo |
+| 2 | Sistema de personajes · gacha con probabilidades · Luckas | Completo |
+| 3 | Arena: capítulos 1–2 · combate continuo · muerte permanente · stamina | Completo |
+| 4 | Mercado: Firestore listings · filtros · transacciones · wallet doradas | Backend listo, UI pendiente |
+| 5 | Escenas principales: hub · gacha · mercado · navegación | En progreso |
+| 6 | Pulido: pity mejorado · más uniques · pasivas · balanceo | Pendiente |
+| 7 | Port móvil: UI responsive · touch · compresión texturas | Pendiente |
 
 ---
 
 ## Estructura del proyecto
 
 ```
-/
+juego-clicker/
 ├── project.godot
-├── README.md
+├── .gitignore
 ├── assets/
-│   ├── characters/        # Spritesheets por rareza
-│   ├── ui/                # Iconos, fondos, botones
-│   └── audio/             # SFX y música
+│   ├── characters/        # Spritesheets por rareza (vacío)
+│   ├── ui/                # Iconos, fondos, botones (vacío)
+│   └── audio/             # SFX y música (vacío)
+├── autoloads/
+│   ├── Firebase.gd        # Auth, Firestore REST, antitrampas, mercado
+│   ├── GameData.gd        # Constantes y tablas de datos
+│   └── GameState.gd       # Estado global del juego
 ├── scenes/
-│   ├── Main.tscn
-│   ├── Clicker.tscn
-│   ├── Gacha.tscn
-│   ├── Arena.tscn
-│   ├── Combat.tscn
-│   └── Market.tscn
-├── scripts/
-│   ├── autoloads/
-│   │   ├── FirebaseManager.gd
-│   │   └── GameState.gd
-│   ├── resources/
-│   │   └── Character.gd
 │   ├── clicker/
+│   │   └── Clicker.tscn
 │   ├── gacha/
+│   │   └── Gacha.gd       # Script listo, .tscn pendiente
 │   ├── arena/
-│   └── market/
+│   │   ├── combat.tscn
+│   │   └── combat.gd
+│   └── market/            # Pendiente
+├── scripts/
+│   ├── arena/
+│   │   ├── CombatManager.gd
+│   │   ├── Combatant.gd
+│   │   ├── EnemyData.gd
+│   │   ├── SkillsGeneric.gd
+│   │   └── SkillsUnique.gd
+│   ├── characters/
+│   │   ├── CharacterFactory.gd
+│   │   └── UniqueCharacters.gd
+│   ├── clicker/
+│   │   └── clicker.gd
+│   └── resources/
+│       └── Character.gd
 └── docs/
-    ├── GDD.md             # Game Design Document completo
-    ├── balancing.md       # Tablas de balanceo y fórmulas
-    └── firebase_schema.md # Esquema de Firestore
+    ├── GDD.md
+    ├── balancing.md
+    └── firebase_schema.md
 ```
 
 ---
@@ -250,7 +340,7 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 
 ### Milestones
 
-Los milestones corresponden directamente a las 6 fases del roadmap. Los issues de tipo meta (decisiones de diseño abiertas, preguntas de balanceo) van sin milestone con el label `needs-design`.
+Los milestones corresponden directamente a las fases del roadmap. Los issues de tipo meta (decisiones de diseño abiertas, preguntas de balanceo) van sin milestone con el label `needs-design`.
 
 ---
 
