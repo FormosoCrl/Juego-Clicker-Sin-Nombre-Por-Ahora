@@ -14,8 +14,8 @@ const GACHA_RARITIES = {
 
 const GACHA_TOTAL_WEIGHT: int = 10000
 const PITY_LEGENDARIO: int = 200
-const GACHA_COST_SINGLE: int = 100
-const GACHA_COST_MULTI: int = 900
+const GACHA_COST_SINGLE: int = 800
+const GACHA_COST_MULTI:  int = 7200
 
 const RARITY_POWER_MULTIPLIER = {
 	"comun":      0.70,
