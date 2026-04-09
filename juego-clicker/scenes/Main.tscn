@@ -1,66 +1,68 @@
-[gd_scene format=3 uid="uid://main_scene"]
+[gd_scene format=3 uid="uid://dkviadyxpwdyk"]
 
-[node name="Main" type="Control"]
+[ext_resource type="Script" uid="uid://bp6n6on1tree7" path="res://scenes/Main.gd" id="1_elqb8"]
+
+[node name="Main" type="Control" unique_id=1674883320]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+script = ExtResource("1_elqb8")
 
-[node name="ContentContainer" type="MarginContainer" parent="."]
+[node name="ContentContainer" type="MarginContainer" parent="." unique_id=1562092524]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
+offset_bottom = -60.0
 grow_horizontal = 2
 grow_vertical = 2
-offset_bottom = -60.0
 
-[node name="ClickerView" type="Control" parent="ContentContainer"]
+[node name="ClickerView" type="Control" parent="ContentContainer" unique_id=2034861455]
 layout_mode = 2
 
-[node name="GachaView" type="Control" parent="ContentContainer"]
+[node name="GachaView" type="Control" parent="ContentContainer" unique_id=462655957]
 layout_mode = 2
 
-[node name="ArenaView" type="Control" parent="ContentContainer"]
+[node name="ArenaView" type="Control" parent="ContentContainer" unique_id=757952197]
 layout_mode = 2
 
-[node name="MarketView" type="Control" parent="ContentContainer"]
+[node name="MarketView" type="Control" parent="ContentContainer" unique_id=1317640555]
 layout_mode = 2
 
-[node name="NavBar" type="PanelContainer" parent="."]
+[node name="NavBar" type="PanelContainer" parent="." unique_id=2032120539]
 layout_mode = 1
-anchor_left = 0.0
+anchors_preset = 12
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_top = -60.0
-offset_bottom = 0.0
 grow_horizontal = 2
 grow_vertical = 0
 
-[node name="HBoxContainer" type="HBoxContainer" parent="NavBar"]
+[node name="HBoxContainer" type="HBoxContainer" parent="NavBar" unique_id=415766392]
 layout_mode = 2
-alignment = 1
 theme_override_constants/separation = 0
+alignment = 1
 
-[node name="ClickerButton" type="Button" parent="NavBar/HBoxContainer"]
+[node name="ClickerButton" type="Button" parent="NavBar/HBoxContainer" unique_id=93214208]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Clicker"
 
-[node name="GachaButton" type="Button" parent="NavBar/HBoxContainer"]
+[node name="GachaButton" type="Button" parent="NavBar/HBoxContainer" unique_id=439980762]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Gacha"
 
-[node name="ArenaButton" type="Button" parent="NavBar/HBoxContainer"]
+[node name="ArenaButton" type="Button" parent="NavBar/HBoxContainer" unique_id=871717634]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Arena"
 
-[node name="MarketButton" type="Button" parent="NavBar/HBoxContainer"]
+[node name="MarketButton" type="Button" parent="NavBar/HBoxContainer" unique_id=1301088120]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mercado"
