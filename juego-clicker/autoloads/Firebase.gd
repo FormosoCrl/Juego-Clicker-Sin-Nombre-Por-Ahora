@@ -2,8 +2,8 @@ extends Node
 
 # ─── CONFIGURACIÓN ────────────────────────────────────────────────────────────
 
-const FIREBASE_PROJECT_ID: String = ""  # ← rellenar cuando crees el proyecto
-const FIREBASE_API_KEY: String = ""     # ← rellenar desde Firebase Console
+const FIREBASE_PROJECT_ID: String = ""
+const FIREBASE_API_KEY: String = ""
 
 const FIRESTORE_URL: String = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents"
 const AUTH_URL: String = "https://identitytoolkit.googleapis.com/v1/accounts"
@@ -23,8 +23,7 @@ signal auth_failed(error: String)
 signal data_loaded(data: Dictionary)
 signal sync_failed(error: String)
 
-# ─── COLA DE REQUESTS PENDIENTES ─────────────────────────────────────────────
-# Si Firebase no está listo, las operaciones se encolan y se ejecutan después
+# ─── COLA DE REQUESTS PENDIENTES ──────────────────────────────────────────────
 
 var _pending_operations: Array = []
 
@@ -43,9 +42,36 @@ func sign_in_anonymous() -> void:
 	var body: Dictionary = { "returnSecureToken": true }
 	_post(url, body, _on_auth_response, false)
 
+func sign_in_with_email(email: String, password: String) -> void:
+	var url: String = AUTH_URL + ":signInWithPassword?key=" + FIREBASE_API_KEY
+	var body: Dictionary = {
+		"email": email,
+		"password": password,
+		"returnSecureToken": true,
+	}
+	_post(url, body, _on_auth_response, false)
+
+func register_with_email(email: String, password: String) -> void:
+	var url: String = AUTH_URL + ":signUp?key=" + FIREBASE_API_KEY
+	var body: Dictionary = {
+		"email": email,
+		"password": password,
+		"returnSecureToken": true,
+	}
+	_post(url, body, _on_auth_response, false)
+
 func _on_auth_response(result: int, response_code: int, body: Dictionary) -> void:
 	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
-		emit_signal("auth_failed", "Error de autenticación: %d" % response_code)
+		var error: String = ""
+		var error_body: Dictionary = body.get("error", {})
+		var message: String = error_body.get("message", "")
+		match message:
+			"EMAIL_EXISTS":           error = "EMAIL_EXISTS"
+			"INVALID_PASSWORD":       error = "INVALID_PASSWORD"
+			"EMAIL_NOT_FOUND":        error = "EMAIL_NOT_FOUND"
+			"WEAK_PASSWORD : Password should be at least 6 characters": error = "WEAK_PASSWORD"
+			_:                        error = "Error: %d" % response_code
+		emit_signal("auth_failed", error)
 		return
 
 	_id_token = body.get("idToken", "")
@@ -85,7 +111,6 @@ func load_player_data() -> void:
 
 func _on_player_data_loaded(_result: int, response_code: int, body: Dictionary) -> void:
 	if response_code == 404:
-		# Jugador nuevo — crear documento inicial
 		_create_new_player()
 		return
 	if response_code != 200:
@@ -122,12 +147,9 @@ func send_click_batch(batch: Array, multiplier: float) -> void:
 	if not _is_ready:
 		_pending_operations.append(func(): send_click_batch(batch, multiplier))
 		return
-
-	# Validación local antes de enviar
 	if not _validate_click_batch(batch):
 		push_warning("Firebase: lote de clicks rechazado localmente")
 		return
-
 	var path: String = "click_events/%s" % _uid
 	var data: Dictionary = {
 		"batch": batch,
@@ -142,16 +164,12 @@ func _validate_click_batch(batch: Array) -> bool:
 		return false
 	if batch.size() > GameData.CLICK_BATCH_SIZE * 2:
 		return false
-
-	# Comprobar que los timestamps son coherentes
 	for i in range(1, batch.size()):
 		var delta: int = batch[i] - batch[i - 1]
 		if delta < 0:
-			return false  # timestamps no crecientes
+			return false
 		if delta < 30:
-			return false  # menos de 30ms entre clicks = bot
-
-	# Comprobar varianza — clicks perfectamente uniformes = bot
+			return false
 	if batch.size() >= 5:
 		var deltas: Array = []
 		for i in range(1, batch.size()):
@@ -167,7 +185,6 @@ func _validate_click_batch(batch: Array) -> bool:
 		if variance < 5.0:
 			push_warning("Firebase: patrón de clicks uniforme detectado")
 			return false
-
 	return true
 
 func _on_click_batch_sent(_result: int, response_code: int, _body: Dictionary) -> void:
@@ -235,8 +252,6 @@ func list_on_market(character: Character, price: int) -> void:
 func fetch_market_listings(filters: Dictionary, callback: Callable) -> void:
 	if not _is_ready:
 		return
-	# Por ahora carga todos y filtra localmente
-	# Cuando tengamos índices en Firestore usaremos queries nativas
 	_fetch("market", func(_r, code, body):
 		if code != 200:
 			callback.call([])
@@ -350,8 +365,6 @@ func _parse_body(raw_body: PackedByteArray) -> Dictionary:
 	return {}
 
 # ─── CONVERSIÓN FIRESTORE ────────────────────────────────────────────────────
-# Firestore usa un formato de tipos explícito:
-# { "fields": { "clave": { "stringValue": "valor" } } }
 
 func _dict_to_firestore(data: Dictionary) -> Dictionary:
 	var fields: Dictionary = {}

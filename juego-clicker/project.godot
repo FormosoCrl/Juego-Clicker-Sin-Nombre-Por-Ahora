@@ -20,6 +20,22 @@ GameData="*uid://burvp45u31lyg"
 GameState="*uid://h2anruslcejl"
 Firebase="*uid://w5lln2qawhaf"
 
+[file_customization]
+
+folder_colors={
+"res://scenes/": "red",
+"res://scenes/arena/": "blue",
+"res://scenes/clicker/": "teal",
+"res://scenes/gacha/": "green",
+"res://scenes/market/": "yellow",
+"res://scripts/": "orange",
+"res://scripts/arena/": "blue",
+"res://scripts/clicker/": "teal",
+"res://scripts/gacha/": "green",
+"res://scripts/market/": "yellow",
+"res://scripts/resources/": "gray"
+}
+
 [physics]
 
 3d/physics_engine="Jolt Physics"

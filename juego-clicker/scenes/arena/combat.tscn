@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b2o6r8dkxpmst"]
 
-[ext_resource type="Script" uid="uid://ddrqq0trkvn6f" path="res://scenes/arena/combat.gd" id="1_c0l0e"]
+[ext_resource type="Script" uid="uid://ddrqq0trkvn6f" path="res://scripts/arena/combat.gd" id="1_c0l0e"]
 [ext_resource type="Script" uid="uid://csl1toixmose2" path="res://scripts/arena/CombatManager.gd" id="2_16qph"]
 
 [node name="Combat" type="Control" unique_id=1493760157]
