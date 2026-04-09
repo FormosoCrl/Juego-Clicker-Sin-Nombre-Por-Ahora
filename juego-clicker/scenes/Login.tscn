@@ -53,6 +53,7 @@ text = "¿No tienes cuenta? Regístrate"
 
 [node name="RegisterView" type="VBoxContainer" parent="CenterContainer/PanelContainer/VBoxContainer"]
 layout_mode = 2
+visible = false
 
 [node name="EmailInput" type="LineEdit" parent="CenterContainer/PanelContainer/VBoxContainer/RegisterView"]
 layout_mode = 2
