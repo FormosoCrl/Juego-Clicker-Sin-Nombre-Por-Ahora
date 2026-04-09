@@ -1,0 +1,66 @@
+[gd_scene format=3 uid="uid://main_scene"]
+
+[node name="Main" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ContentContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+offset_bottom = -60.0
+
+[node name="ClickerView" type="Control" parent="ContentContainer"]
+layout_mode = 2
+
+[node name="GachaView" type="Control" parent="ContentContainer"]
+layout_mode = 2
+
+[node name="ArenaView" type="Control" parent="ContentContainer"]
+layout_mode = 2
+
+[node name="MarketView" type="Control" parent="ContentContainer"]
+layout_mode = 2
+
+[node name="NavBar" type="PanelContainer" parent="."]
+layout_mode = 1
+anchor_left = 0.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -60.0
+offset_bottom = 0.0
+grow_horizontal = 2
+grow_vertical = 0
+
+[node name="HBoxContainer" type="HBoxContainer" parent="NavBar"]
+layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 0
+
+[node name="ClickerButton" type="Button" parent="NavBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Clicker"
+
+[node name="GachaButton" type="Button" parent="NavBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gacha"
+
+[node name="ArenaButton" type="Button" parent="NavBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Arena"
+
+[node name="MarketButton" type="Button" parent="NavBar/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mercado"
