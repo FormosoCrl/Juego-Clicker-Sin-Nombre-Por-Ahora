@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://arena_scene"]
+
+[node name="Arena" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="EnergyLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Energía: 0/60"
+
+[node name="ChapterLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Capítulo 1"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="Level1Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Nivel 1"
+
+[node name="Level2Button" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Nivel 2"
+
+[node name="BossButton" type="Button" parent="VBoxContainer/HBoxContainer"]
+layout_mode = 2
+text = "Boss"
+
+[node name="TeamLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Equipo (0/5)"
+
+[node name="TeamContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="TeamSlot1" type="Button" parent="VBoxContainer/TeamContainer"]
+layout_mode = 2
+text = "Vacío"
+
+[node name="TeamSlot2" type="Button" parent="VBoxContainer/TeamContainer"]
+layout_mode = 2
+text = "Vacío"
+
+[node name="TeamSlot3" type="Button" parent="VBoxContainer/TeamContainer"]
+layout_mode = 2
+text = "Vacío"
+
+[node name="TeamSlot4" type="Button" parent="VBoxContainer/TeamContainer"]
+layout_mode = 2
+text = "Vacío"
+
+[node name="TeamSlot5" type="Button" parent="VBoxContainer/TeamContainer"]
+layout_mode = 2
+text = "Vacío"
+
+[node name="RosterLabel" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Roster"
+
+[node name="RosterList" type="ItemList" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="StartButton" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Iniciar combate"
