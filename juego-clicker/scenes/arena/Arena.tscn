@@ -1,7 +1,10 @@
 [gd_scene format=3 uid="uid://arena_scene"]
 
+[ext_resource type="Script" uid="uid://arena_script" path="res://scenes/arena/Arena.gd" id="1_arena"]
+
 [node name="Arena" type="Control"]
 layout_mode = 3
+script = ExtResource("1_arena")
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
