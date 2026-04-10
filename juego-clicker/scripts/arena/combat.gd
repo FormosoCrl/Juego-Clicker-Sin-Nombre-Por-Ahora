@@ -1,7 +1,6 @@
 extends Control
 
 const EnemyData = preload("res://scripts/arena/EnemyData.gd")
-const CharacterFactory = preload("res://scripts/characters/CharacterFactory.gd")
 
 @onready var combat_manager = $CombatManager
 @onready var combat_log: RichTextLabel = $CombatLog
@@ -15,15 +14,7 @@ var level: int = 1
 func _ready() -> void:
 	_build_slot_references()
 	_connect_combat_manager()
-	_add_test_team()
 	_start_combat()
-
-func _add_test_team() -> void:
-	for i in range(3):
-		var rarity: String = ["comun", "especial", "raro"][i]
-		var character: Character = CharacterFactory.create_procedural(rarity)
-		GameState.roster.append(character)
-		GameState.team.append(character)
 
 func _build_slot_references() -> void:
 	for i in range(1, 6):
