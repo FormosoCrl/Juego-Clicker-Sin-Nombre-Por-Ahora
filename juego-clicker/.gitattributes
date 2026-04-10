@@ -1,2 +1,7 @@
 # Normalize EOL for all files that Git considers text files.
 * text=auto eol=lf
+
+# Force GDScript files as text
+*.gd text eol=lf
+*.tscn text eol=lf
+*.tres text eol=lf
