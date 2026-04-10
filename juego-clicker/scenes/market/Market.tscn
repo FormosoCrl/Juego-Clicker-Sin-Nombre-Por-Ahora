@@ -1,6 +1,6 @@
 [gd_scene format=3]
 
-[ext_resource type="Script" uid="uid://cl0janma46qo0" path="res://scripts/market/Market.gd" id="1_market"]
+[ext_resource type="Script" uid="uid://cl0janma46qo0" path="res://scenes/market/Market.gd" id="1_market"]
 
 [node name="Market" type="Control"]
 layout_mode = 3
