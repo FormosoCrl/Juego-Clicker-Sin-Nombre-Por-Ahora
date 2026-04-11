@@ -215,13 +215,15 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 
 ### Escenas Godot
 
-| Escena | Estado |
-|--------|--------|
-| `scenes/clicker/Clicker.tscn` | Implementada |
-| `scenes/arena/combat.tscn` | Implementada |
-| `scenes/gacha/Gacha.tscn` | Pendiente (script listo) |
-| `scenes/market/Market.tscn` | Pendiente |
-| `Main.tscn` | Pendiente |
+| Escena | Script | Estado |
+|--------|--------|--------|
+| `scenes/Login.tscn` | `scripts/login.gd` | Implementada (login/registro/invitado — Firebase pendiente de configurar) |
+| `scenes/Main.tscn` | `scenes/Main.gd` | Implementada (hub con navegación por tabs, lazy-load de subescenas) |
+| `scenes/clicker/Clicker.tscn` | `scripts/clicker/clicker.gd` | Implementada |
+| `scenes/gacha/Gacha.tscn` | `scenes/gacha/Gacha.gd` | Implementada |
+| `scenes/arena/Arena.tscn` | `scenes/arena/Arena.gd` | Implementada |
+| `scenes/arena/combat.tscn` | `scripts/arena/combat.gd` | Implementada |
+| `scenes/market/Market.tscn` | `scenes/market/Market.gd` | Implementada |
 
 ### Colecciones Firebase
 
@@ -239,6 +241,7 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 
 ### Completamente implementado
 
+- Flujo completo de navegación: Login → Main hub → tabs (Clicker, Gacha, Arena, Mercado)
 - Click con batching y validación antitrampas
 - Gacha con 7 rarezas, pity, habilidades cross-class
 - Generación procedural de personajes (nombre, stats, habilidades)
@@ -248,21 +251,22 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 - 32 habilidades con efectos completos (stun, shields, regen, evasión, etc.)
 - Sistema de energía con reset semanal y degradación de XP
 - Arena: 2 capítulos, 2 niveles + 1 boss cada uno (6 encuentros)
-- Firebase: auth, sincronización, validación de clicks, mercado
-- UI: Clicker, Gacha (script), Combate
+- Firebase: código de auth + Firestore REST completo (pendiente configurar credenciales)
+- UI completa: todas las escenas tienen script y están conectadas
 
-### Implementado parcialmente
+### Implementado parcialmente / bloqueado
 
-- **Pasivas de personaje**: el campo `passive_id` existe, la lógica de activación no
-- **Stat secundaria (nivel 15)**: el umbral está definido, no se aplica en combate
-- **Escena de gacha**: script listo, falta el `.tscn`
+- **Login / Firebase**: código completo, bloqueado esperando credenciales del proyecto Firebase
+- **Pasivas de personaje**: campo `passive_id` existe, lógica de activación en combate no implementada
+- **Stat secundaria (nivel 15)**: umbral definido, no se aplica en combate
+- **Mercado (compra)**: backend Firestore listo, la UI de compra activa pero sin datos reales hasta tener Firebase
 
 ### Pendiente
 
-- Escena de mercado (UI)
-- Escena principal / hub de navegación
+- Credenciales de Firebase (FIREBASE_PROJECT_ID y FIREBASE_API_KEY en Firebase.gd)
 - Personajes únicos adicionales (solo existe Luckas)
 - Capítulos 3 en adelante
+- Lógica de pasivas de personaje
 - Arte de personajes y UI (carpetas `assets/` vacías)
 - Audio
 - Port móvil
@@ -276,10 +280,11 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 | 1 | Clicker base · economía azules · Firebase auth · antitrampas | Completo |
 | 2 | Sistema de personajes · gacha con probabilidades · Luckas | Completo |
 | 3 | Arena: capítulos 1–2 · combate continuo · muerte permanente · stamina | Completo |
-| 4 | Mercado: Firestore listings · filtros · transacciones · wallet doradas | Backend listo, UI pendiente |
-| 5 | Escenas principales: hub · gacha · mercado · navegación | En progreso |
-| 6 | Pulido: pity mejorado · más uniques · pasivas · balanceo | Pendiente |
-| 7 | Port móvil: UI responsive · touch · compresión texturas | Pendiente |
+| 4 | Mercado: Firestore listings · filtros · transacciones · wallet doradas | Completo (bloqueado por credenciales Firebase) |
+| 5 | Escenas principales: Login · hub · gacha · mercado · navegación | Completo |
+| 6 | Firebase: configurar credenciales · probar flujo completo online | Pendiente |
+| 7 | Contenido: capítulo 3+ · más personajes únicos · pasivas | Pendiente |
+| 8 | Port móvil: UI responsive · touch · compresión texturas | Pendiente |
 
 ---
 
@@ -289,25 +294,33 @@ El jugador puede poner personajes en venta indicando un precio libre en monedas 
 juego-clicker/
 ├── project.godot
 ├── .gitignore
+├── .gitattributes
 ├── assets/
 │   ├── characters/        # Spritesheets por rareza (vacío)
 │   ├── ui/                # Iconos, fondos, botones (vacío)
 │   └── audio/             # SFX y música (vacío)
 ├── autoloads/
-│   ├── Firebase.gd        # Auth, Firestore REST, antitrampas, mercado
+│   ├── Firebase.gd        # Auth anónima/email, Firestore REST, antitrampas, mercado
 │   ├── GameData.gd        # Constantes y tablas de datos
 │   └── GameState.gd       # Estado global del juego
 ├── scenes/
+│   ├── Login.tscn / Main.gd (hub con navegación por tabs)
+│   ├── Main.tscn  / Main.gd
 │   ├── clicker/
 │   │   └── Clicker.tscn
 │   ├── gacha/
-│   │   └── Gacha.gd       # Script listo, .tscn pendiente
+│   │   ├── Gacha.tscn
+│   │   └── Gacha.gd
 │   ├── arena/
-│   │   ├── combat.tscn
-│   │   └── combat.gd
-│   └── market/            # Pendiente
+│   │   ├── Arena.tscn / Arena.gd
+│   │   └── combat.tscn
+│   └── market/
+│       ├── Market.tscn
+│       └── Market.gd
 ├── scripts/
+│   ├── login.gd           # Lógica de Login/Registro/Invitado
 │   ├── arena/
+│   │   ├── combat.gd
 │   │   ├── CombatManager.gd
 │   │   ├── Combatant.gd
 │   │   ├── EnemyData.gd
