@@ -96,7 +96,7 @@ func _set_loading(loading: bool, on_register: bool = false) -> void:
 	else:
 		login_button.disabled = loading
 		login_button.text = "Cargando..." if loading else "Iniciar sesión"
-to_register_button.disabled = loading
+		to_register_button.disabled = loading
 
 # ─── ACCIONES ─────────────────────────────────────────────────────────────────
 
