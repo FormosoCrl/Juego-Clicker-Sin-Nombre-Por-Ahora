@@ -210,11 +210,9 @@ func _on_start_pressed() -> void:
 	var is_new: bool = selected_level != 3
 	if not GameState.start_level(GameState.current_chapter, is_new):
 		return
-	var combat_scene = load("res://scenes/arena/combat.tscn").instantiate()
-	combat_scene.chapter = GameState.current_chapter
-	combat_scene.level = selected_level
-	get_tree().root.add_child(combat_scene)
-	get_tree().current_scene = combat_scene
+	GameState.pending_combat_chapter = GameState.current_chapter
+	GameState.pending_combat_level = selected_level
+	get_tree().change_scene_to_file("res://scenes/arena/combat.tscn")
 
 # ─── SEÑALES DE GAMESTATE ─────────────────────────────────────────────────────
 

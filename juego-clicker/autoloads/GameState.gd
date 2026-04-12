@@ -60,6 +60,8 @@ var team: Array = []    # Array de Character (referencias a objetos en roster)
 # ─── PROGRESO DE ARENA ────────────────────────────────────────────────────────
 
 var current_chapter: int = 1
+var pending_combat_chapter: int = 1
+var pending_combat_level: int = 1
 var bosses_cleared: int = 0
 var weekly_replays: Dictionary = {}
 var weekly_reset_timestamp: int = 0

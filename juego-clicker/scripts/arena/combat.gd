@@ -12,6 +12,8 @@ var chapter: int = 1
 var level: int = 1
 
 func _ready() -> void:
+	chapter = GameState.pending_combat_chapter
+	level = GameState.pending_combat_level
 	_build_slot_references()
 	_connect_combat_manager()
 	_start_combat()
