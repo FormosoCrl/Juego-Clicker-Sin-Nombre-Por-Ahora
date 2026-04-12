@@ -8,7 +8,6 @@ extends Control
 @onready var login_email: LineEdit = $CenterContainer/PanelContainer/VBoxContainer/LoginView/EmailInput
 @onready var login_password: LineEdit = $CenterContainer/PanelContainer/VBoxContainer/LoginView/PasswordInput
 @onready var login_button: Button = $CenterContainer/PanelContainer/VBoxContainer/LoginView/LoginButton
-@onready var guest_button: Button = $CenterContainer/PanelContainer/VBoxContainer/LoginView/GuestButton
 @onready var to_register_button: Button = $CenterContainer/PanelContainer/VBoxContainer/LoginView/ToRegisterButton
 
 @onready var register_email: LineEdit = $CenterContainer/PanelContainer/VBoxContainer/RegisterView/EmailInput
@@ -33,7 +32,6 @@ func _ready() -> void:
 
 func _connect_signals() -> void:
 	login_button.pressed.connect(_on_login_pressed)
-	guest_button.pressed.connect(_on_guest_pressed)
 	to_register_button.pressed.connect(_show_register)
 	register_button.pressed.connect(_on_register_pressed)
 	to_login_button.pressed.connect(_show_login)
@@ -98,8 +96,7 @@ func _set_loading(loading: bool, on_register: bool = false) -> void:
 	else:
 		login_button.disabled = loading
 		login_button.text = "Cargando..." if loading else "Iniciar sesión"
-		guest_button.disabled = loading
-		to_register_button.disabled = loading
+to_register_button.disabled = loading
 
 # ─── ACCIONES ─────────────────────────────────────────────────────────────────
 
@@ -140,10 +137,6 @@ func _on_register_pressed() -> void:
 
 	_set_loading(true, true)
 	Firebase.register_with_email(email, password)
-
-func _on_guest_pressed() -> void:
-	_set_loading(true)
-	Firebase.sign_in_anonymous()
 
 # ─── RESPUESTAS DE FIREBASE ───────────────────────────────────────────────────
 

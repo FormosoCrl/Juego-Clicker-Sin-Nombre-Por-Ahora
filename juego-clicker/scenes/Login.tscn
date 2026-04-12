@@ -46,10 +46,6 @@ secret = true
 layout_mode = 2
 text = "Iniciar sesión"
 
-[node name="GuestButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer/LoginView" unique_id=1644391717]
-layout_mode = 2
-text = "Jugar como invitado"
-
 [node name="ToRegisterButton" type="Button" parent="CenterContainer/PanelContainer/VBoxContainer/LoginView" unique_id=732067314]
 layout_mode = 2
 text = "¿No tienes cuenta? Regístrate"
