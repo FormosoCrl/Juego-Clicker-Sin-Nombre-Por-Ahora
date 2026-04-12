@@ -2,8 +2,8 @@ extends Node
 
 # ─── CONFIGURACIÓN ────────────────────────────────────────────────────────────
 
-const FIREBASE_PROJECT_ID: String = ""
-const FIREBASE_API_KEY: String = ""
+const FIREBASE_PROJECT_ID: String = "clicker-8a1df"
+const FIREBASE_API_KEY: String = "AIzaSyDXTvWWj6etqLMeqnc_H-UMc44F8sB20CM"
 
 const FIRESTORE_URL: String = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents"
 const AUTH_URL: String = "https://identitytoolkit.googleapis.com/v1/accounts"
@@ -414,3 +414,11 @@ func _firestore_to_value(field: Dictionary):
 			map[k] = _firestore_to_value(field["mapValue"]["fields"][k])
 		return map
 	return null
+
+# ─── AUTOSAVE ─────────────────────────────────────────────────────────────────
+
+func save_player_state() -> void:
+	if not _is_ready:
+		return
+	var path: String = "users/%s" % _uid
+	_patch(path, GameState.to_dict(), func(_r, _c, _b): pass)

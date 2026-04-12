@@ -76,6 +76,19 @@ var last_click_times: Array = []  # timestamps de los últimos clicks para antit
 func _ready() -> void:
 	energy = GameData.ENERGY_BASE_MAX
 	_recalculate_energy_max()
+	var autosave_timer := Timer.new()
+	autosave_timer.wait_time = 60.0
+	autosave_timer.autostart = true
+	autosave_timer.timeout.connect(_autosave)
+	add_child(autosave_timer)
+
+func _autosave() -> void:
+	Firebase.save_player_state()
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_WM_CLOSE_REQUEST:
+		Firebase.save_player_state()
+		get_tree().quit()
 
 func _process(delta: float) -> void:
 	_process_energy_regen(delta)
