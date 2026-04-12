@@ -146,6 +146,9 @@ func _on_auth_completed(_uid: String) -> void:
 
 func _on_auth_failed(error: String) -> void:
 	_set_loading(false)
+	if error == "NO_SESSION" or error == "SESSION_EXPIRED":
+		_show_login()
+		return
 	var on_register: bool = register_view.visible
 	match error:
 		"EMAIL_EXISTS":

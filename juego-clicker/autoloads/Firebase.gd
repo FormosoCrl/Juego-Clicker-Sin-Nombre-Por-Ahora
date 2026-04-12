@@ -7,6 +7,7 @@ const FIREBASE_API_KEY: String = "AIzaSyDXTvWWj6etqLMeqnc_H-UMc44F8sB20CM"
 
 const FIRESTORE_URL: String = "https://firestore.googleapis.com/v1/projects/%s/databases/(default)/documents"
 const AUTH_URL: String = "https://identitytoolkit.googleapis.com/v1/accounts"
+const SESSION_FILE: String = "user://session.dat"
 
 # ─── ESTADO ───────────────────────────────────────────────────────────────────
 
@@ -33,7 +34,10 @@ func _ready() -> void:
 	if FIREBASE_PROJECT_ID == "" or FIREBASE_API_KEY == "":
 		push_warning("Firebase: proyecto no configurado. Modo offline activo.")
 		return
-	sign_in_anonymous()
+	if load_session():
+		_restore_session()
+	else:
+		emit_signal("auth_failed", "NO_SESSION")
 
 # ─── AUTENTICACIÓN ────────────────────────────────────────────────────────────
 
@@ -83,6 +87,71 @@ func _on_auth_response(result: int, response_code: int, body: Dictionary) -> voi
 	GameState.is_logged_in = true
 	_is_ready = true
 
+	save_session()
+	emit_signal("auth_completed", _uid)
+	_flush_pending_operations()
+	load_player_data()
+
+# ─── PERSISTENCIA DE SESIÓN ───────────────────────────────────────────────────
+
+func save_session() -> void:
+	if _refresh_token == "" or _uid == "":
+		return
+	var data: Dictionary = {
+		"refresh_token": _refresh_token,
+		"uid": _uid,
+	}
+	var file := FileAccess.open(SESSION_FILE, FileAccess.WRITE)
+	if file:
+		file.store_string(JSON.stringify(data))
+		file.close()
+
+func load_session() -> bool:
+	if not FileAccess.file_exists(SESSION_FILE):
+		return false
+	var file := FileAccess.open(SESSION_FILE, FileAccess.READ)
+	if not file:
+		return false
+	var text: String = file.get_as_text()
+	file.close()
+	var parsed = JSON.parse_string(text)
+	if not parsed is Dictionary:
+		return false
+	_refresh_token = parsed.get("refresh_token", "")
+	_uid = parsed.get("uid", "")
+	if _refresh_token == "" or _uid == "":
+		return false
+	return true
+
+func clear_session() -> void:
+	if FileAccess.file_exists(SESSION_FILE):
+		DirAccess.remove_absolute(SESSION_FILE)
+	_refresh_token = ""
+	_id_token = ""
+	_uid = ""
+	_is_ready = false
+	GameState.is_logged_in = false
+	GameState.uid = ""
+
+func _restore_session() -> void:
+	var url: String = "https://securetoken.googleapis.com/v1/token?key=" + FIREBASE_API_KEY
+	var body: Dictionary = {
+		"grant_type": "refresh_token",
+		"refresh_token": _refresh_token,
+	}
+	_post(url, body, _on_session_restored, false)
+
+func _on_session_restored(result: int, response_code: int, body: Dictionary) -> void:
+	if result != HTTPRequest.RESULT_SUCCESS or response_code != 200:
+		clear_session()
+		emit_signal("auth_failed", "SESSION_EXPIRED")
+		return
+	_id_token = body.get("id_token", "")
+	_refresh_token = body.get("refresh_token", _refresh_token)
+	_token_expiry = Time.get_unix_time_from_system() + 3600
+	GameState.uid = _uid
+	GameState.is_logged_in = true
+	_is_ready = true
 	emit_signal("auth_completed", _uid)
 	_flush_pending_operations()
 	load_player_data()
