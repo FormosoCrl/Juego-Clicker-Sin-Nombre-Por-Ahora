@@ -79,3 +79,66 @@ layout_mode = 2
 [node name="StartButton" type="Button" parent="VBoxContainer"]
 layout_mode = 2
 text = "Iniciar combate"
+
+[node name="CharacterSelectPopup" type="PopupPanel" parent="."]
+exclusive = false
+custom_minimum_size = Vector2(500, 500)
+
+[node name="PopupVBox" type="VBoxContainer" parent="CharacterSelectPopup"]
+layout_mode = 2
+
+[node name="PopupHeader" type="HBoxContainer" parent="CharacterSelectPopup/PopupVBox"]
+layout_mode = 2
+
+[node name="PopupTitle" type="Label" parent="CharacterSelectPopup/PopupVBox/PopupHeader"]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Seleccionar personaje"
+
+[node name="CloseButton" type="Button" parent="CharacterSelectPopup/PopupVBox/PopupHeader"]
+layout_mode = 2
+text = "✕"
+
+[node name="SearchInput" type="LineEdit" parent="CharacterSelectPopup/PopupVBox"]
+layout_mode = 2
+placeholder_text = "Buscar por nombre..."
+
+[node name="RarityFilter" type="HBoxContainer" parent="CharacterSelectPopup/PopupVBox"]
+layout_mode = 2
+
+[node name="FilterAll" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Todas"
+
+[node name="FilterComun" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Común"
+
+[node name="FilterEspecial" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Especial"
+
+[node name="FilterRaro" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Raro"
+
+[node name="FilterEpico" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Épico"
+
+[node name="FilterMitico" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Mítico"
+
+[node name="FilterLegendario" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Legendario"
+
+[node name="FilterMilagro" type="Button" parent="CharacterSelectPopup/PopupVBox/RarityFilter"]
+layout_mode = 2
+text = "Milagro"
+
+[node name="CharacterList" type="ItemList" parent="CharacterSelectPopup/PopupVBox"]
+layout_mode = 2
+size_flags_vertical = 3
+custom_minimum_size = Vector2(0, 300)
