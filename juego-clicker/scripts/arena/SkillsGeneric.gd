@@ -70,7 +70,7 @@ static func execute(
 		return
 
 	var mult: float = GameData.RARITY_POWER_MULTIPLIER.get(
-			caster.character.rarity, 1.0)
+			caster.character.rarity, 1.0) * caster.passive_skill_mult
 
 	match skill.get("target", ""):
 		"ST_enemy", "ST_ally", "ST_ally_self":
@@ -163,9 +163,9 @@ static func _calc_damage(skill: Dictionary, caster: Combatant, mult: float) -> i
 
 static func _get_primary_stat(caster: Combatant, skill_class: String) -> int:
 	match skill_class:
-		"mago", "sanador": return caster.character.mana_base
-		"picaro", "arquero": return caster.character.suerte_base
-		_: return caster.character.fuerza_base
+		"mago", "sanador": return caster.mana_combat
+		"picaro", "arquero": return caster.character.suerte_combat
+		_: return caster.fuerza_combat
 
 static func _apply_execute(
 		skill: Dictionary,

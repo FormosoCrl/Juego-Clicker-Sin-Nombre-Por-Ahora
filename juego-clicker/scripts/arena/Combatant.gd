@@ -13,6 +13,18 @@ signal died(combatant)
 var character: Character = null
 var is_player_side: bool = true
 
+# ─── STATS DE COMBATE ─────────────────────────────────────────────────────────
+# Se inicializan en setup() desde los stats base. Pueden ser modificadas
+# por la stat secundaria (nivel 15). vida y suerte ya viven en Character.
+var fuerza_combat: int = 0
+var mana_combat: int = 0
+
+# ─── PASIVA ───────────────────────────────────────────────────────────────────
+var passive_skill_mult: float = 1.0    # arcane_mastery
+var passive_damage_bonus: float = 0.0  # lethal_precision, keen_eye
+var passive_hit_bonus: float = 0.0    # lethal_precision
+var passive_crit_chance: float = 0.0  # keen_eye
+
 # ─── TIMERS DE ATAQUE ─────────────────────────────────────────────────────────
 var attack_timer: float = 0.0
 var next_attack_in: float = 0.0
@@ -39,8 +51,45 @@ func setup(char: Character, player_side: bool) -> void:
 	character = char
 	is_player_side = player_side
 	character.init_combat()
+	_init_combat_stats()
+	_apply_passive()
 	_roll_next_attack_time()
 	_load_skill_cooldowns()
+
+func _init_combat_stats() -> void:
+	fuerza_combat = character.fuerza_base
+	mana_combat   = character.mana_base
+	if character.level < GameData.UNLOCK_STAT_SECONDARY:
+		return
+	var secondary: String = GameData.CLASS_SECONDARY_STAT.get(character.char_class, "")
+	var bonus: float = GameData.SECONDARY_STAT_BONUS
+	match secondary:
+		"fuerza": fuerza_combat = int(character.fuerza_base * (1.0 + bonus))
+		"mana":   mana_combat   = int(character.mana_base   * (1.0 + bonus))
+		"suerte": character.suerte_combat = int(character.suerte_base * (1.0 + bonus))
+
+func _apply_passive() -> void:
+	if character.level < GameData.UNLOCK_CLASS_PASSIVE or character.passive_id == "":
+		return
+	var passive: Dictionary = GameData.PASSIVES.get(character.passive_id, {})
+	if passive.is_empty():
+		return
+	if passive.has("vida_bonus_pct"):
+		character.vida_actual += int(character.vida_max() * passive["vida_bonus_pct"])
+	if passive.has("skill_damage_mult"):
+		passive_skill_mult = 1.0 + passive["skill_damage_mult"]
+	if passive.has("damage_bonus_pct"):
+		passive_damage_bonus = passive["damage_bonus_pct"]
+	if passive.has("hit_bonus"):
+		passive_hit_bonus = passive["hit_bonus"]
+	if passive.has("regen_pct"):
+		var rps: float = character.vida_max() * passive["regen_pct"]
+		apply_effect("regen", passive.get("regen_duration", 999.0), rps)
+	if passive.has("crit_chance"):
+		passive_crit_chance = passive["crit_chance"]
+
+func get_effective_hit_chance() -> float:
+	return min(character.get_hit_chance() + passive_hit_bonus, 0.99)
 
 func _load_skill_cooldowns() -> void:
 	if character.skill_1_id != "":
@@ -117,16 +166,21 @@ func _process_effects(delta: float) -> void:
 func _execute_basic_attack() -> void:
 	# El CombatManager escucha esta señal y decide el target
 	var hit_roll: float = randf()
-	if hit_roll > character.get_hit_chance():
+	if hit_roll > get_effective_hit_chance():
 		emit_signal("attack_missed", self)
 		return
 	var damage: int = _calculate_basic_damage()
 	emit_signal("attack_landed", self, damage, false)
 
 func _calculate_basic_damage() -> int:
-	var base: float = character.fuerza_base * 0.3  # antes 0.8
+	var base: float = fuerza_combat * 0.3
 	var variance: float = base * 0.1
-	return max(1, int(base + randf_range(-variance, variance)))
+	var dmg: float = base + randf_range(-variance, variance)
+	dmg *= (1.0 + passive_damage_bonus)
+	# keen_eye: chance de crítico en ataque básico
+	if passive_crit_chance > 0.0 and randf() < passive_crit_chance:
+		dmg *= 1.5
+	return max(1, int(dmg))
 
 func use_skill(slot: int, targets: Array, all_combatants: Array) -> void:
 	if slot == 1 and skill_1_ready:

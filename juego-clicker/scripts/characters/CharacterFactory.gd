@@ -78,6 +78,7 @@ static func create_procedural(rarity: String = "") -> Character:
 	c.suerte_base = stats["suerte"]
 	c.skill_1_id = skills["skill_1"]
 	c.skill_2_id = skills.get("skill_2", "")
+	c.passive_id = GameData.CLASS_PASSIVE.get(char_class, "")
 	c.attack_speed_min = _get_attack_speed(char_class)
 	c.attack_speed_max = _get_attack_speed(char_class) + 0.4
 	c.attack_hit_chance = _get_hit_chance(char_class, stats)

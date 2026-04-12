@@ -140,6 +140,33 @@ const UNLOCK_SKILL_2: int = 25
 const UNLOCK_SKILL_1_UPGRADE: int = 40
 const UNLOCK_CLASS_PASSIVE: int = 60
 
+# Stat secundaria que se potencia al llegar a nivel 15
+const CLASS_SECONDARY_STAT = {
+	"guerrero": "fuerza",
+	"mago":     "suerte",
+	"picaro":   "fuerza",
+	"sanador":  "mana",
+	"arquero":  "fuerza",
+}
+const SECONDARY_STAT_BONUS: float = 0.15  # +15% del stat secundario en combate
+
+# Pasivas de clase: se activan al llegar a nivel 60
+const CLASS_PASSIVE = {
+	"guerrero": "iron_will",
+	"mago":     "arcane_mastery",
+	"picaro":   "lethal_precision",
+	"sanador":  "blessed_aura",
+	"arquero":  "keen_eye",
+}
+
+const PASSIVES = {
+	"iron_will":        { "name": "Voluntad de Hierro", "class": "guerrero", "vida_bonus_pct":   0.20 },
+	"arcane_mastery":   { "name": "Maestría Arcana",    "class": "mago",     "skill_damage_mult": 0.20 },
+	"lethal_precision": { "name": "Precisión Letal",    "class": "picaro",   "hit_bonus": 0.15, "damage_bonus_pct": 0.10 },
+	"blessed_aura":     { "name": "Aura Bendita",       "class": "sanador",  "regen_pct": 0.03, "regen_duration": 999.0 },
+	"keen_eye":         { "name": "Ojo Agudo",          "class": "arquero",  "damage_bonus_pct": 0.10, "crit_chance": 0.20 },
+}
+
 # ─── ENERGÍA ──────────────────────────────────────────────────────────────────
 
 const ENERGY_BASE_MAX: int = 60
