@@ -12,17 +12,25 @@ grow_vertical = 2
 script = ExtResource("1_0e7h6")
 
 [node name="CenterContainer" type="CenterContainer" parent="." unique_id=1897494223]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer" unique_id=669325871]
 layout_mode = 2
+alignment = 1
+theme_override_constants/separation = 20
 
 [node name="ScoreLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=282817434]
 layout_mode = 2
-text = "0 bolas azules"
+text = "0 Core Energy"
+horizontal_alignment = 1
+theme_override_font_sizes/font_size = 32
 
 [node name="ClickButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1969022174]
 layout_mode = 2
-text = "Click"
+custom_minimum_size = Vector2(200, 200)
+text = "CLICK"
