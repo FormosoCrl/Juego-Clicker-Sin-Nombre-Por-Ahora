@@ -75,6 +75,7 @@ var weekly_reset_timestamp: int = 0
 
 var click_batch: Array = []
 var last_click_times: Array = []  # timestamps de los últimos clicks para antitrampas
+var _click_accumulator: float = 0.0
 
 # ─── CICLO DE VIDA ────────────────────────────────────────────────────────────
 
@@ -154,7 +155,9 @@ func register_click() -> void:
 
 	# Acreditar localmente de inmediato (optimistic update)
 	var effective_multiplier: float = click_multiplier * (boost_multiplier if boost_active else 1.0)
-	var earned: int = roundi(GameData.CLICK_BASE_VALUE * effective_multiplier)
+	_click_accumulator += GameData.CLICK_BASE_VALUE * effective_multiplier
+	var earned: int = int(_click_accumulator)
+	_click_accumulator -= earned
 	blue_balls += earned
 
 	# Enviar lote cuando alcanza el tamaño definido
