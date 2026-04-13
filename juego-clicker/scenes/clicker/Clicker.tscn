@@ -34,3 +34,15 @@ theme_override_font_sizes/font_size = 32
 layout_mode = 2
 custom_minimum_size = Vector2(200, 200)
 text = "CLICK"
+
+[node name="BoostButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1234567890]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 50)
+text = "⚡ ¡BOOST DISPONIBLE!"
+visible = false
+
+[node name="BoostLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=987654321]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+visible = false

@@ -12,6 +12,7 @@ signal roster_changed()
 signal team_changed()
 signal rebirth_available()
 signal level_unlocked(chapter: int)
+signal boost_changed(active: bool, seconds_remaining: float)
 
 # ─── ESTADO DE SESIÓN ─────────────────────────────────────────────────────────
 
@@ -34,6 +35,10 @@ var doradas: int = 0:
 
 var click_multiplier: float = 1.0
 var rebirth_count: int = 0
+
+var boost_active: bool = false
+var boost_ends_at: float = 0.0
+var boost_multiplier: float = 1.5
 
 # ─── ENERGÍA ──────────────────────────────────────────────────────────────────
 
@@ -92,6 +97,14 @@ func _notification(what: int) -> void:
 
 func _process(delta: float) -> void:
 	_process_energy_regen(delta)
+	if boost_active:
+		var remaining: float = boost_ends_at - Time.get_unix_time_from_system()
+		if remaining <= 0.0:
+			boost_active = false
+			boost_ends_at = 0.0
+			emit_signal("boost_changed", false, 0.0)
+		else:
+			emit_signal("boost_changed", true, remaining)
 
 # ─── ENERGÍA ──────────────────────────────────────────────────────────────────
 
@@ -113,6 +126,19 @@ func spend_energy(amount: int) -> bool:
 	energy -= amount
 	return true
 
+# ─── BOOST ────────────────────────────────────────────────────────────────────
+
+func activate_boost() -> void:
+	if boost_active:
+		return
+	boost_active = true
+	boost_ends_at = Time.get_unix_time_from_system() + 60.0
+	emit_signal("boost_changed", true, 60.0)
+
+func get_boost_available() -> bool:
+	var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
+	return seconds_in_cycle < 300 and not boost_active
+
 # ─── CLICKS ───────────────────────────────────────────────────────────────────
 
 func register_click() -> void:
@@ -127,7 +153,8 @@ func register_click() -> void:
 	click_batch.append(now)
 
 	# Acreditar localmente de inmediato (optimistic update)
-	var earned: int = int(GameData.CLICK_BASE_VALUE * click_multiplier)
+	var effective_multiplier: float = click_multiplier * (boost_multiplier if boost_active else 1.0)
+	var earned: int = int(GameData.CLICK_BASE_VALUE * effective_multiplier)
 	blue_balls += earned
 
 	# Enviar lote cuando alcanza el tamaño definido
