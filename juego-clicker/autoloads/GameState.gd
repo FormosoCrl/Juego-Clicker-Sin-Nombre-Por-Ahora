@@ -154,7 +154,7 @@ func register_click() -> void:
 
 	# Acreditar localmente de inmediato (optimistic update)
 	var effective_multiplier: float = click_multiplier * (boost_multiplier if boost_active else 1.0)
-	var earned: int = int(GameData.CLICK_BASE_VALUE * effective_multiplier)
+	var earned: int = roundi(GameData.CLICK_BASE_VALUE * effective_multiplier)
 	blue_balls += earned
 
 	# Enviar lote cuando alcanza el tamaño definido
