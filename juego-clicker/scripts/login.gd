@@ -25,10 +25,6 @@ var _is_loading: bool = false
 func _ready() -> void:
 	_show_login()
 	_connect_signals()
-	
-	# Si ya hay sesión activa saltar login directamente
-	if GameState.is_logged_in:
-		_go_to_main()
 
 func _connect_signals() -> void:
 	login_button.pressed.connect(_on_login_pressed)
@@ -43,6 +39,7 @@ func _connect_signals() -> void:
 	# Escuchar respuestas de Firebase
 	Firebase.auth_completed.connect(_on_auth_completed)
 	Firebase.auth_failed.connect(_on_auth_failed)
+	Firebase.data_loaded.connect(_on_data_loaded)
 
 # ─── NAVEGACIÓN ENTRE VISTAS ──────────────────────────────────────────────────
 
@@ -161,6 +158,9 @@ func _on_auth_failed(error: String) -> void:
 			_show_error("Contraseña muy débil", on_register)
 		_:
 			_show_error("Error: " + error, on_register)
+
+func _on_data_loaded(_data: Dictionary) -> void:
+	_go_to_main()
 
 func _go_to_main() -> void:
 	get_tree().change_scene_to_file("res://scenes/Main.tscn")
