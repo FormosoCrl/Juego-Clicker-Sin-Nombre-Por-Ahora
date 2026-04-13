@@ -139,7 +139,6 @@ func _on_register_pressed() -> void:
 
 func _on_auth_completed(_uid: String) -> void:
 	_set_loading(false)
-	_go_to_main()
 
 func _on_auth_failed(error: String) -> void:
 	_set_loading(false)
