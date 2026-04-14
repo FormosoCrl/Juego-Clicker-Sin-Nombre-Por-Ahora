@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bq4gr1xa4dsmh"]
 
 [ext_resource type="Script" uid="uid://bpqk4uymhu60b" path="res://scripts/clicker/clicker.gd" id="1_0e7h6"]
+[ext_resource type="Script" path="res://scenes/clicker/SpiritShop.gd" id="2_spiritshop"]
 
 [node name="Clicker" type="Control" unique_id=1422391782]
 layout_mode = 3
@@ -35,6 +36,11 @@ layout_mode = 2
 custom_minimum_size = Vector2(200, 200)
 text = "CLICK"
 
+[node name="SpiritsButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1111111111]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 40)
+text = "🔮 Espíritus"
+
 [node name="BoostButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1234567890]
 layout_mode = 2
 custom_minimum_size = Vector2(200, 50)
@@ -46,3 +52,55 @@ layout_mode = 2
 text = ""
 horizontal_alignment = 1
 visible = false
+
+[node name="SpiritShopPanel" type="Panel" parent="." unique_id=2222222222]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -250.0
+offset_top = -250.0
+offset_right = 250.0
+offset_bottom = 250.0
+visible = false
+script = ExtResource("2_spiritshop")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="SpiritShopPanel" unique_id=3333333333]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 8
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -8.0
+
+[node name="Header" type="HBoxContainer" parent="SpiritShopPanel/VBoxContainer" unique_id=4444444444]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="SpiritShopPanel/VBoxContainer/Header" unique_id=5555555555]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Tienda de Espíritus"
+theme_override_font_sizes/font_size = 18
+
+[node name="CloseButton" type="Button" parent="SpiritShopPanel/VBoxContainer/Header" unique_id=6666666666]
+layout_mode = 2
+text = "✕"
+
+[node name="DoradasLabel" type="Label" parent="SpiritShopPanel/VBoxContainer" unique_id=7777777777]
+layout_mode = 2
+text = "0 monedas doradas"
+horizontal_alignment = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="SpiritShopPanel/VBoxContainer" unique_id=8888888888]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="SpiritList" type="VBoxContainer" parent="SpiritShopPanel/VBoxContainer/ScrollContainer" unique_id=9999999999]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12

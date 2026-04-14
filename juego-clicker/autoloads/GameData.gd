@@ -249,3 +249,69 @@ func calculate_stats(rarity: String, char_class: String) -> Dictionary:
 		"suerte":     max(1, int(total * weights["suerte"])),
 		"focus_stat": focus_stat,
 	}
+
+# ─── ESPÍRITUS ────────────────────────────────────────────────────────────────
+
+const SPIRITS = {
+	"blaze": {
+		"name": "Blaze", "rarity": "comun", "price": 500,
+		"effect": "chance_double", "value": 0.15,
+		"description": "15% de duplicar orbes en el siguiente click",
+		"color": Color(0.8, 0.4, 0.1),
+	},
+	"ember": {
+		"name": "Ember", "rarity": "comun", "price": 500,
+		"effect": "every_n_clicks", "value": 25, "bonus": 3.0,
+		"description": "Cada 25 clicks, el siguiente vale x3",
+		"color": Color(1.0, 0.5, 0.0),
+	},
+	"wisp": {
+		"name": "Wisp", "rarity": "especial", "price": 2000,
+		"effect": "passive_bonus", "value": 0.05,
+		"description": "+5% de orbes en todos los clicks",
+		"color": Color(0.4, 0.6, 1.0),
+	},
+	"flicker": {
+		"name": "Flicker", "rarity": "especial", "price": 2000,
+		"effect": "boost_duration", "value": 90.0,
+		"description": "El boost global dura 90s en vez de 60s",
+		"color": Color(0.6, 0.3, 1.0),
+	},
+	"gale": {
+		"name": "Gale", "rarity": "raro", "price": 8000,
+		"effect": "chance_triple", "value": 0.08,
+		"description": "8% de triplicar orbes en el siguiente click",
+		"color": Color(0.2, 0.8, 0.4),
+	},
+	"tide": {
+		"name": "Tide", "rarity": "raro", "price": 8000,
+		"effect": "auto_orbs", "value": 200, "interval": 900,
+		"description": "Cada 15 min genera 200 orbes automaticamente",
+		"color": Color(0.1, 0.6, 0.9),
+	},
+	"volt": {
+		"name": "Volt", "rarity": "epico", "price": 25000,
+		"effect": "passive_bonus", "value": 0.15,
+		"description": "+15% de orbes en todos los clicks",
+		"color": Color(0.9, 0.9, 0.1),
+	},
+	"nova": {
+		"name": "Nova", "rarity": "mitico", "price": 75000,
+		"effect": "chance_x10", "value": 0.05,
+		"description": "5% de x10 en el siguiente click",
+		"color": Color(1.0, 0.3, 0.6),
+	},
+	"aether": {
+		"name": "Aether", "rarity": "legendario", "price": 200000,
+		"effect": "boost_duration", "value": 120.0,
+		"description": "El boost global dura 2 minutos",
+		"color": Color(1.0, 0.8, 0.1),
+	},
+	"solaris": {
+		"name": "Solaris", "rarity": "milagro", "price": 1000000,
+		"effect": "combo",
+		"passive_bonus": 0.05, "chance_x10": 0.05, "boost_duration": 90.0,
+		"description": "+5% orbes, 5% x10, boost 90s",
+		"color": Color(1.0, 0.95, 0.6),
+	},
+}
