@@ -11,19 +11,148 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_vnyi7")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="." unique_id=1291980256]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+[node name="Root" type="VBoxContainer" parent="." unique_id=2000000001]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 0
 
-[node name="BallsLabel" type="Label" parent="VBoxContainer" unique_id=201749295]
+[node name="TopBar" type="PanelContainer" parent="Root" unique_id=2000000002]
 layout_mode = 2
 
-[node name="PullButton1" type="Button" parent="VBoxContainer" unique_id=2126303018]
+[node name="TopInner" type="HBoxContainer" parent="Root/TopBar" unique_id=2000000003]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="OrbsBox" type="VBoxContainer" parent="Root/TopBar/TopInner" unique_id=2000000004]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="OrbsTitle" type="Label" parent="Root/TopBar/TopInner/OrbsBox" unique_id=2000000005]
+layout_mode = 2
+text = "ORBES"
+modulate = Color(1, 1, 1, 0.45)
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+
+[node name="OrbsLabel" type="Label" parent="Root/TopBar/TopInner/OrbsBox" unique_id=2000000006]
+layout_mode = 2
+text = "0"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="VSep" type="VSeparator" parent="Root/TopBar/TopInner" unique_id=2000000007]
 layout_mode = 2
 
-[node name="PullButton10" type="Button" parent="VBoxContainer" unique_id=1048509143]
+[node name="PityBox" type="VBoxContainer" parent="Root/TopBar/TopInner" unique_id=2000000008]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 0
+
+[node name="PityTitle" type="Label" parent="Root/TopBar/TopInner/PityBox" unique_id=2000000009]
+layout_mode = 2
+text = "PITY"
+modulate = Color(1, 1, 1, 0.45)
+theme_override_font_sizes/font_size = 9
+horizontal_alignment = 1
+
+[node name="PityLabel" type="Label" parent="Root/TopBar/TopInner/PityBox" unique_id=2000000010]
+layout_mode = 2
+text = "0 / 90"
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+
+[node name="PortalArea" type="CenterContainer" parent="Root" unique_id=2000000011]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="PortalPanel" type="Panel" parent="Root/PortalArea" unique_id=2000000012]
+layout_mode = 2
+custom_minimum_size = Vector2(220, 220)
+
+[node name="PortalVBox" type="VBoxContainer" parent="Root/PortalArea/PortalPanel" unique_id=2000000013]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+alignment = 1
+theme_override_constants/separation = 8
+
+[node name="PortalGlyph" type="Label" parent="Root/PortalArea/PortalPanel/PortalVBox" unique_id=2000000014]
+layout_mode = 2
+text = "✦"
+theme_override_font_sizes/font_size = 72
+horizontal_alignment = 1
+modulate = Color(0.6, 0.4, 1.0, 0.9)
+
+[node name="PortalHint" type="Label" parent="Root/PortalArea/PortalPanel/PortalVBox" unique_id=2000000015]
+layout_mode = 2
+text = "Invoca para obtener\nnuevos personajes"
+theme_override_font_sizes/font_size = 12
+horizontal_alignment = 1
+modulate = Color(1, 1, 1, 0.45)
+autowrap_mode = 3
+
+[node name="ButtonBar" type="HBoxContainer" parent="Root" unique_id=2000000016]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="Pull1Button" type="Button" parent="Root/ButtonBar" unique_id=2000000017]
+layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "Invocar ×1\n800 orbes"
+theme_override_font_sizes/font_size = 13
+
+[node name="VSep2" type="VSeparator" parent="Root/ButtonBar" unique_id=2000000018]
 layout_mode = 2
 
-[node name="ResultLabel" type="Label" parent="VBoxContainer" unique_id=1825302500]
+[node name="Pull10Button" type="Button" parent="Root/ButtonBar" unique_id=2000000019]
 layout_mode = 2
+size_flags_horizontal = 3
+custom_minimum_size = Vector2(0, 52)
+text = "Invocar ×10\n7200 orbes"
+theme_override_font_sizes/font_size = 13
+
+[node name="ResultsOverlay" type="Panel" parent="." unique_id=2000000020]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+visible = false
+
+[node name="OverlayVBox" type="VBoxContainer" parent="ResultsOverlay" unique_id=2000000021]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme_override_constants/separation = 0
+offset_left = 10.0
+offset_top = 10.0
+offset_right = -10.0
+offset_bottom = -10.0
+
+[node name="OverlayTitle" type="Label" parent="ResultsOverlay/OverlayVBox" unique_id=2000000022]
+layout_mode = 2
+text = "RESULTADO"
+theme_override_font_sizes/font_size = 14
+horizontal_alignment = 1
+modulate = Color(1, 1, 1, 0.55)
+
+[node name="CardsScroll" type="ScrollContainer" parent="ResultsOverlay/OverlayVBox" unique_id=2000000023]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="CardsContainer" type="HFlowContainer" parent="ResultsOverlay/OverlayVBox/CardsScroll" unique_id=2000000024]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/h_separation = 8
+theme_override_constants/v_separation = 8
+
+[node name="DismissButton" type="Button" parent="ResultsOverlay/OverlayVBox" unique_id=2000000025]
+layout_mode = 2
+custom_minimum_size = Vector2(0, 44)
+text = "Continuar"
+theme_override_font_sizes/font_size = 14
