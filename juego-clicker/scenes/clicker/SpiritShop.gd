@@ -47,7 +47,7 @@ func _populate() -> void:
 		else:
 			btn.text = "%d 🪙" % spirit["price"]
 			btn.disabled = GameState.doradas < spirit["price"]
-			var sid := spirit_id
+			var sid: String = spirit_id
 			btn.pressed.connect(func(): GameState.buy_spirit(sid))
 		row.add_child(btn)
 
