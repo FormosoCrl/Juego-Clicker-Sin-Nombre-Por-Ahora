@@ -41,6 +41,7 @@ var rebirth_count: int = 0
 var boost_active: bool = false
 var boost_ends_at: float = 0.0
 var boost_multiplier: float = 1.5
+var _boost_cycle_used: int = -1
 
 var owned_spirits: Dictionary = {}
 var spirit_click_counter: int = 0
@@ -146,16 +147,24 @@ func _get_boost_duration() -> float:
 	return 60.0
 
 func activate_boost() -> void:
-	if boost_active:
+	if boost_active or not get_boost_available():
 		return
+	_boost_cycle_used = int(Time.get_unix_time_from_system()) / 600
 	boost_active = true
 	var duration: float = _get_boost_duration()
 	boost_ends_at = Time.get_unix_time_from_system() + duration
 	emit_signal("boost_changed", true, duration)
 
 func get_boost_available() -> bool:
-	var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
-	return seconds_in_cycle < 300 and not boost_active
+	var now: int = int(Time.get_unix_time_from_system())
+	var current_cycle: int = now / 600
+	var seconds_in_cycle: int = now % 600
+	return seconds_in_cycle < 300 and not boost_active and _boost_cycle_used != current_cycle
+
+func get_boost_cooldown_seconds() -> int:
+	var now: int = int(Time.get_unix_time_from_system())
+	var seconds_in_cycle: int = now % 600
+	return 600 - seconds_in_cycle
 
 # ─── ESPÍRITUS ────────────────────────────────────────────────────────────────
 

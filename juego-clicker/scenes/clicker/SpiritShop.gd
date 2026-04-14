@@ -10,8 +10,8 @@ func _ready() -> void:
 	GameState.spirit_purchased.connect(func(_id): _populate())
 	_populate()
 
-func _on_doradas_changed(value: int) -> void:
-	doradas_label.text = "%d monedas doradas" % value
+func _on_doradas_changed(_value: int) -> void:
+	_populate()
 
 func _populate() -> void:
 	doradas_label.text = "%d monedas doradas" % GameState.doradas

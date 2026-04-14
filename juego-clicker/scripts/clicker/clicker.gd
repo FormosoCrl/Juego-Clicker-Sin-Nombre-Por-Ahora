@@ -38,16 +38,15 @@ func _update_boost_button() -> void:
 		boost_button.visible = false
 		boost_cooldown_label.visible = false
 		return
-	var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
-	if seconds_in_cycle < 300:
+	if GameState.get_boost_available():
+		var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
 		boost_button.visible = true
 		boost_button.text = "⚡ ¡BOOST! (%ds)" % (300 - seconds_in_cycle)
 		boost_cooldown_label.visible = false
 	else:
 		boost_button.visible = false
-		var secs_until_next: int = 600 - seconds_in_cycle
 		boost_cooldown_label.visible = true
-		boost_cooldown_label.text = "Próximo boost en %ds" % secs_until_next
+		boost_cooldown_label.text = "Próximo boost en %ds" % GameState.get_boost_cooldown_seconds()
 
 func _spawn_spirit(spirit_id: String) -> void:
 	if _spirit_nodes.has(spirit_id):
