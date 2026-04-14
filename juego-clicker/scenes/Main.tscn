@@ -32,6 +32,9 @@ layout_mode = 2
 [node name="MarketView" type="Control" parent="ContentContainer" unique_id=1317640555]
 layout_mode = 2
 
+[node name="ProfileView" type="Control" parent="ContentContainer" unique_id=1317640556]
+layout_mode = 2
+
 [node name="NavBar" type="PanelContainer" parent="." unique_id=2032120539]
 layout_mode = 1
 anchors_preset = 12
@@ -66,3 +69,8 @@ text = "Arena"
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Mercado"
+
+[node name="ProfileButton" type="Button" parent="NavBar/HBoxContainer" unique_id=1301088121]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Perfil"
