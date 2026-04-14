@@ -103,6 +103,9 @@ func save_session() -> void:
 		"refresh_token": _refresh_token,
 		"uid": _uid,
 		"email": current_email,
+		"owned_spirits": GameState.owned_spirits,
+		"spirit_click_counter": GameState.spirit_click_counter,
+		"boost_cycle_used": GameState._boost_cycle_used,
 	}
 	var file := FileAccess.open(SESSION_FILE, FileAccess.WRITE)
 	if file:
@@ -123,6 +126,9 @@ func load_session() -> bool:
 	_refresh_token = parsed.get("refresh_token", "")
 	_uid = parsed.get("uid", "")
 	current_email = parsed.get("email", "")
+	GameState.owned_spirits = parsed.get("owned_spirits", {})
+	GameState.spirit_click_counter = parsed.get("spirit_click_counter", 0)
+	GameState._boost_cycle_used = parsed.get("boost_cycle_used", -1)
 	if _refresh_token == "" or _uid == "":
 		return false
 	return true

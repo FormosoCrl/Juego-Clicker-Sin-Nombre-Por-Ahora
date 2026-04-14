@@ -100,7 +100,8 @@ func _autosave() -> void:
 
 func _notification(what: int) -> void:
 	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		Firebase.save_player_state()
+		Firebase.save_session()   # síncrono — escribe en disco antes de salir
+		Firebase.save_player_state()  # async a Firestore, best-effort
 		get_tree().quit()
 
 func _process(delta: float) -> void:
@@ -182,6 +183,7 @@ func buy_spirit(spirit_id: String) -> bool:
 	owned_spirits[spirit_id] = true
 	emit_signal("spirit_purchased", spirit_id)
 	Firebase.save_player_state()
+	Firebase.save_session()
 	return true
 
 func _process_tide(delta: float) -> void:
