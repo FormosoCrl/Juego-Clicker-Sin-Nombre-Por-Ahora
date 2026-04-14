@@ -6,6 +6,7 @@ const SpiritNodeScript = preload("res://scripts/clicker/SpiritNode.gd")
 @onready var click_button: Button = $CenterContainer/VBoxContainer/ClickButton
 @onready var boost_button: Button = $CenterContainer/VBoxContainer/BoostButton
 @onready var boost_label: Label = $CenterContainer/VBoxContainer/BoostLabel
+@onready var boost_cooldown_label: Label = $CenterContainer/VBoxContainer/BoostCooldownLabel
 @onready var spirits_button: Button = $CenterContainer/VBoxContainer/SpiritsButton
 @onready var spirit_shop: Control = $SpiritShopPanel
 
@@ -35,13 +36,18 @@ func _process(delta: float) -> void:
 func _update_boost_button() -> void:
 	if GameState.boost_active:
 		boost_button.visible = false
+		boost_cooldown_label.visible = false
 		return
-	var available: bool = GameState.get_boost_available()
-	boost_button.visible = available
-	if available:
-		var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
-		var seconds_left: int = 300 - seconds_in_cycle
-		boost_button.text = "⚡ ¡BOOST! (%ds)" % seconds_left
+	var seconds_in_cycle: int = int(Time.get_unix_time_from_system()) % 600
+	if seconds_in_cycle < 300:
+		boost_button.visible = true
+		boost_button.text = "⚡ ¡BOOST! (%ds)" % (300 - seconds_in_cycle)
+		boost_cooldown_label.visible = false
+	else:
+		boost_button.visible = false
+		var secs_until_next: int = 600 - seconds_in_cycle
+		boost_cooldown_label.visible = true
+		boost_cooldown_label.text = "Próximo boost en %ds" % secs_until_next
 
 func _spawn_spirit(spirit_id: String) -> void:
 	if _spirit_nodes.has(spirit_id):
@@ -67,6 +73,7 @@ func _on_boost_pressed() -> void:
 func _on_boost_changed(active: bool, seconds_remaining: float) -> void:
 	if active:
 		boost_button.visible = false
+		boost_cooldown_label.visible = false
 		boost_label.visible = true
 		boost_label.text = "⚡ x1.5 activo — %ds" % int(seconds_remaining)
 	else:

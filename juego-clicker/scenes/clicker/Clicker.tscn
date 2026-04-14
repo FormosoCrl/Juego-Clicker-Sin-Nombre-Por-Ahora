@@ -53,6 +53,13 @@ text = ""
 horizontal_alignment = 1
 visible = false
 
+[node name="BoostCooldownLabel" type="Label" parent="CenterContainer/VBoxContainer" unique_id=1357924680]
+layout_mode = 2
+text = ""
+horizontal_alignment = 1
+modulate = Color(0.7, 0.7, 0.7, 1)
+visible = false
+
 [node name="SpiritShopPanel" type="Panel" parent="." unique_id=2222222222]
 layout_mode = 1
 anchors_preset = 8
