@@ -20,9 +20,9 @@ func _ready() -> void:
 	click_button.pressed.connect(_on_click)
 	boost_button.pressed.connect(_on_boost_pressed)
 	spirits_button.pressed.connect(func(): spirit_shop.show())
-	if Firebase.current_email == "dformosoc@gmail.com":
-		dev_gold_button.visible = true
-		dev_gold_button.pressed.connect(func(): GameState.doradas += 1000)
+	dev_gold_button.pressed.connect(func(): GameState.doradas += 1000)
+	Firebase.data_loaded.connect(_check_dev_button)
+	_check_dev_button({})
 	GameState.blue_balls_changed.connect(_on_balls_changed)
 	GameState.boost_changed.connect(_on_boost_changed)
 	GameState.spirit_purchased.connect(_on_spirit_purchased)
@@ -90,6 +90,9 @@ func _on_spirit_activated(spirit_id: String) -> void:
 	var node = _spirit_nodes.get(spirit_id, null)
 	if node != null:
 		node.activate_glow(1.5)
+
+func _check_dev_button(_data: Dictionary = {}) -> void:
+	dev_gold_button.visible = Firebase.current_email == "dformosoc@gmail.com"
 
 func _on_balls_changed(new_value: int) -> void:
 	score_label.text = "%d Core Energy" % new_value

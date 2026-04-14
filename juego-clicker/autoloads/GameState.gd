@@ -464,6 +464,7 @@ func load_from_dict(data: Dictionary) -> void:
 	weekly_reset_timestamp = data.get("weekly_reset_timestamp", 0)
 	owned_spirits = data.get("owned_spirits", {})
 	spirit_click_counter = data.get("spirit_click_counter", 0)
+	_boost_cycle_used = data.get("boost_cycle_used", -1)
 	_recalculate_energy_max()
 
 func to_dict() -> Dictionary:
@@ -480,5 +481,6 @@ func to_dict() -> Dictionary:
 		"weekly_reset_timestamp": weekly_reset_timestamp,
 		"owned_spirits": owned_spirits,
 		"spirit_click_counter": spirit_click_counter,
+		"boost_cycle_used": _boost_cycle_used,
 		"last_sync": Time.get_unix_time_from_system(),
 	}
