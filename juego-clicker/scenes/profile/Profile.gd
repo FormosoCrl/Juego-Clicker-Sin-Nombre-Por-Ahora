@@ -2,33 +2,42 @@ extends Control
 
 # ─── NODOS ────────────────────────────────────────────────────────────────────
 
-@onready var username_label: Label = $VBox/Header/HeaderInfo/UsernameLabel
-@onready var uid_label: Label = $VBox/Header/HeaderInfo/UidLabel
-@onready var logout_button: Button = $VBox/Header/LogoutButton
-@onready var roster_count_label: Label = $VBox/RosterCountLabel
-@onready var character_list: VBoxContainer = $VBox/ScrollContainer/CharacterList
-@onready var detail_panel: Panel = $DetailPanel
-@onready var detail_name: Label = $DetailPanel/VBox/NameLabel
-@onready var detail_rarity: Label = $DetailPanel/VBox/RarityLabel
-@onready var detail_class: Label = $DetailPanel/VBox/ClassLabel
-@onready var detail_level: Label = $DetailPanel/VBox/LevelLabel
-@onready var detail_stats: Label = $DetailPanel/VBox/StatsLabel
-@onready var detail_skills: Label = $DetailPanel/VBox/SkillsLabel
-@onready var detail_close: Button = $DetailPanel/VBox/CloseButton
+@onready var username_label: Label    = $Root/HeaderBar/HeaderInner/UserInfo/UsernameLabel
+@onready var uid_label: Label         = $Root/HeaderBar/HeaderInner/UserInfo/UidLabel
+@onready var logout_button: Button    = $Root/HeaderBar/HeaderInner/LogoutButton
+@onready var roster_stat: Label       = $Root/StatsBar/RosterStat
+@onready var character_list: VBoxContainer = $Root/ScrollContainer/CharacterList
 
-# ─── COLORES POR RAREZA ────────────────────────────────────────────────────────
+@onready var detail_panel: Panel      = $DetailPanel
+@onready var color_header: ColorRect  = $DetailPanel/PanelVBox/ColorHeader
+@onready var detail_name: Label       = $DetailPanel/PanelVBox/ContentPad/ContentVBox/NameLabel
+@onready var detail_sub: Label        = $DetailPanel/PanelVBox/ContentPad/ContentVBox/SubLabel
+@onready var detail_level: Label      = $DetailPanel/PanelVBox/ContentPad/ContentVBox/LevelLabel
+@onready var stat_vida: Label         = $DetailPanel/PanelVBox/ContentPad/ContentVBox/StatsGrid/VidaStat
+@onready var stat_fuerza: Label       = $DetailPanel/PanelVBox/ContentPad/ContentVBox/StatsGrid/FuerzaStat
+@onready var stat_mana: Label         = $DetailPanel/PanelVBox/ContentPad/ContentVBox/StatsGrid/ManaStat
+@onready var stat_suerte: Label       = $DetailPanel/PanelVBox/ContentPad/ContentVBox/StatsGrid/SuerteStat
+@onready var detail_skills: Label     = $DetailPanel/PanelVBox/ContentPad/ContentVBox/SkillsLabel
+@onready var detail_close: Button     = $DetailPanel/PanelVBox/ContentPad/ContentVBox/CloseButton
+
+# ─── RAREZA ───────────────────────────────────────────────────────────────────
 
 const RARITY_COLORS: Dictionary = {
-	"comun":      Color(0.7, 0.7, 0.7),
-	"especial":   Color(0.4, 0.8, 0.4),
-	"raro":       Color(0.3, 0.6, 1.0),
-	"epico":      Color(0.7, 0.3, 1.0),
-	"legendario": Color(1.0, 0.7, 0.1),
-	"mitico":     Color(1.0, 0.3, 0.3),
-	"milagro":    Color(1.0, 0.9, 0.4),
+	"comun":      Color(0.65, 0.65, 0.65),
+	"especial":   Color(0.35, 0.75, 0.35),
+	"raro":       Color(0.25, 0.55, 1.0),
+	"epico":      Color(0.65, 0.25, 1.0),
+	"legendario": Color(1.0,  0.65, 0.05),
+	"mitico":     Color(1.0,  0.25, 0.25),
+	"milagro":    Color(1.0,  0.88, 0.35),
 }
 
-# ─── READY ────────────────────────────────────────────────────────────────────
+const RARITY_LABELS: Dictionary = {
+	"comun": "Común", "especial": "Especial", "raro": "Raro",
+	"epico": "Épico", "legendario": "Legendario", "mitico": "Mítico", "milagro": "Milagro",
+}
+
+# ─── CICLO DE VIDA ────────────────────────────────────────────────────────────
 
 func _ready() -> void:
 	logout_button.pressed.connect(_on_logout)
@@ -38,107 +47,113 @@ func _ready() -> void:
 	_populate()
 
 func _on_visibility_changed() -> void:
-	if not is_node_ready():
+	if not is_node_ready() or not visible:
 		return
-	if visible:
-		_populate()
+	_populate()
 
 # ─── POPULATE ─────────────────────────────────────────────────────────────────
 
 func _populate() -> void:
 	var email: String = Firebase.current_email
 	username_label.text = email if email != "" else "Jugador"
-	uid_label.text = "UID: " + GameState.uid
+	uid_label.text = GameState.uid
 
 	for child in character_list.get_children():
 		child.queue_free()
 
 	var roster: Array = GameState.roster
-	roster_count_label.text = "Personajes: %d" % roster.size()
+	var alive: int = roster.filter(func(c): return not c.is_dead).size()
+	roster_stat.text = "%d personajes  ·  %d activos" % [roster.size(), alive]
 
 	for character in roster:
-		character_list.add_child(_make_character_row(character))
+		character_list.add_child(_make_row(character))
 
-func _make_character_row(character: Character) -> Control:
-	var row := PanelContainer.new()
-	var hbox := HBoxContainer.new()
-	hbox.add_theme_constant_override("separation", 10)
+# ─── FILA COMPACTA ────────────────────────────────────────────────────────────
 
-	# Franja de color por rareza
-	var color_bar := ColorRect.new()
-	color_bar.custom_minimum_size = Vector2(6, 0)
-	color_bar.color = RARITY_COLORS.get(character.rarity, Color.WHITE)
-	color_bar.size_flags_vertical = Control.SIZE_EXPAND_FILL
-	hbox.add_child(color_bar)
+func _make_row(character: Character) -> Control:
+	var rarity_color: Color = RARITY_COLORS.get(character.rarity, Color.WHITE)
 
-	# Info principal
-	var info := VBoxContainer.new()
-	info.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	var row := HBoxContainer.new()
+	row.add_theme_constant_override("separation", 0)
 
-	var name_row := HBoxContainer.new()
+	# Barra lateral de rareza
+	var bar := ColorRect.new()
+	bar.custom_minimum_size = Vector2(4, 36)
+	bar.color = rarity_color
+	bar.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	row.add_child(bar)
+
+	# Padding izquierdo
+	var pad := Control.new()
+	pad.custom_minimum_size = Vector2(8, 0)
+	row.add_child(pad)
+
+	# Nombre + subtítulo
+	var vbox := VBoxContainer.new()
+	vbox.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	vbox.add_theme_constant_override("separation", 0)
+
 	var name_lbl := Label.new()
-	name_lbl.text = character.name
-	name_lbl.add_theme_font_size_override("font_size", 14)
-	name_row.add_child(name_lbl)
-
+	name_lbl.text = character.name + (" ☠" if character.is_dead else "")
+	name_lbl.add_theme_font_size_override("font_size", 13)
 	if character.is_dead:
-		var dead_lbl := Label.new()
-		dead_lbl.text = " [MUERTO]"
-		dead_lbl.modulate = Color(1, 0.2, 0.2)
-		dead_lbl.add_theme_font_size_override("font_size", 12)
-		name_row.add_child(dead_lbl)
+		name_lbl.modulate = Color(0.6, 0.3, 0.3)
 
 	var sub_lbl := Label.new()
 	sub_lbl.text = "%s · %s · Nv.%d" % [
-		character.rarity.to_upper(),
+		RARITY_LABELS.get(character.rarity, character.rarity),
 		character.char_class.capitalize(),
 		character.level
 	]
-	sub_lbl.modulate.a = 0.7
-	sub_lbl.add_theme_font_size_override("font_size", 11)
+	sub_lbl.add_theme_font_size_override("font_size", 10)
+	sub_lbl.modulate = Color(rarity_color.r, rarity_color.g, rarity_color.b, 0.75)
 
-	info.add_child(name_row)
-	info.add_child(sub_lbl)
-	hbox.add_child(info)
+	vbox.add_child(name_lbl)
+	vbox.add_child(sub_lbl)
+	row.add_child(vbox)
 
-	# Botón detalle
+	# Botón ver
 	var btn := Button.new()
-	btn.text = "Ver"
+	btn.text = "▶"
+	btn.flat = true
+	btn.custom_minimum_size = Vector2(32, 0)
+	btn.add_theme_font_size_override("font_size", 14)
 	var cid: String = character.id
 	btn.pressed.connect(func(): _show_detail(cid))
-	hbox.add_child(btn)
+	row.add_child(btn)
 
-	row.add_child(hbox)
 	return row
 
-# ─── DETALLE ──────────────────────────────────────────────────────────────────
+# ─── PANEL DETALLE ────────────────────────────────────────────────────────────
 
 func _show_detail(character_id: String) -> void:
-	var character: Character = GameState.get_character_by_id(character_id)
-	if character == null:
+	var c: Character = GameState.get_character_by_id(character_id)
+	if c == null:
 		return
 
-	var rarity_color: Color = RARITY_COLORS.get(character.rarity, Color.WHITE)
-	detail_name.text = character.name
-	detail_name.modulate = rarity_color
-	detail_rarity.text = "Rareza: %s" % character.rarity.to_upper()
-	detail_class.text = "Clase: %s" % character.char_class.capitalize()
-	detail_level.text = "Nivel %d  ·  XP: %d / %d" % [
-		character.level,
-		character.xp,
-		GameData.get_xp_for_level(character.level)
+	var rc: Color = RARITY_COLORS.get(c.rarity, Color.WHITE)
+	color_header.color = rc
+
+	detail_name.text = c.name
+	detail_name.modulate = rc
+	detail_sub.text = "%s  ·  %s%s" % [
+		RARITY_LABELS.get(c.rarity, c.rarity),
+		c.char_class.capitalize(),
+		"  ·  ☠ Muerto" if c.is_dead else ""
 	]
-	detail_stats.text = "❤ Vida: %d   ⚔ Fuerza: %d   ✦ Mana: %d   ★ Suerte: %d" % [
-		character.vida_base,
-		character.fuerza_base,
-		character.mana_base,
-		character.suerte_base,
-	]
-	var skills_text: String = "Habilidades:\n"
-	skills_text += "  · %s\n" % (character.skill_1_id if character.skill_1_id != "" else "—")
-	skills_text += "  · %s\n" % (character.skill_2_id if character.skill_2_id != "" else "Disponible a nivel 25")
-	skills_text += "  · Pasiva: %s" % (character.passive_id if character.passive_id != "" else "Disponible a nivel 60")
-	detail_skills.text = skills_text
+
+	var xp_needed: int = GameData.get_xp_for_level(c.level)
+	detail_level.text = "Nivel %d  —  XP %d / %d" % [c.level, c.xp, xp_needed]
+
+	stat_vida.text   = "❤ Vida: %d"   % c.vida_base
+	stat_fuerza.text = "⚔ Fuerza: %d" % c.fuerza_base
+	stat_mana.text   = "✦ Mana: %d"   % c.mana_base
+	stat_suerte.text = "★ Suerte: %d" % c.suerte_base
+
+	var sk1: String = c.skill_1_id if c.skill_1_id != "" else "—"
+	var sk2: String = c.skill_2_id if c.skill_2_id != "" else "Nivel 25"
+	var skp: String = c.passive_id  if c.passive_id  != "" else "Nivel 60"
+	detail_skills.text = "● %s   ● %s\n● Pasiva: %s" % [sk1, sk2, skp]
 
 	detail_panel.show()
 
