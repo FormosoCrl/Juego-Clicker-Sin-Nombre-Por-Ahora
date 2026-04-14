@@ -16,6 +16,7 @@ var _refresh_token: String = ""
 var _token_expiry: int = 0
 var _uid: String = ""
 var _is_ready: bool = false
+var current_email: String = ""
 
 # ─── SEÑALES ──────────────────────────────────────────────────────────────────
 
@@ -47,6 +48,7 @@ func sign_in_anonymous() -> void:
 	_post(url, body, _on_auth_response, false)
 
 func sign_in_with_email(email: String, password: String) -> void:
+	current_email = email
 	var url: String = AUTH_URL + ":signInWithPassword?key=" + FIREBASE_API_KEY
 	var body: Dictionary = {
 		"email": email,

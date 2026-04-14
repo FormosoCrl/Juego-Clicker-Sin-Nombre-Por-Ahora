@@ -36,6 +36,12 @@ layout_mode = 2
 custom_minimum_size = Vector2(200, 200)
 text = "CLICK"
 
+[node name="DevGoldButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1122334455]
+layout_mode = 2
+custom_minimum_size = Vector2(200, 40)
+text = "[DEV] +1000 doradas"
+visible = false
+
 [node name="SpiritsButton" type="Button" parent="CenterContainer/VBoxContainer" unique_id=1111111111]
 layout_mode = 2
 custom_minimum_size = Vector2(200, 40)

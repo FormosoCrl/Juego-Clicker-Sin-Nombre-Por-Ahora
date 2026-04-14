@@ -7,6 +7,7 @@ const SpiritNodeScript = preload("res://scripts/clicker/SpiritNode.gd")
 @onready var boost_button: Button = $CenterContainer/VBoxContainer/BoostButton
 @onready var boost_label: Label = $CenterContainer/VBoxContainer/BoostLabel
 @onready var boost_cooldown_label: Label = $CenterContainer/VBoxContainer/BoostCooldownLabel
+@onready var dev_gold_button: Button = $CenterContainer/VBoxContainer/DevGoldButton
 @onready var spirits_button: Button = $CenterContainer/VBoxContainer/SpiritsButton
 @onready var spirit_shop: Control = $SpiritShopPanel
 
@@ -19,6 +20,9 @@ func _ready() -> void:
 	click_button.pressed.connect(_on_click)
 	boost_button.pressed.connect(_on_boost_pressed)
 	spirits_button.pressed.connect(func(): spirit_shop.show())
+	if Firebase.current_email == "dformosoc@gmail.com":
+		dev_gold_button.visible = true
+		dev_gold_button.pressed.connect(func(): GameState.doradas += 1000)
 	GameState.blue_balls_changed.connect(_on_balls_changed)
 	GameState.boost_changed.connect(_on_boost_changed)
 	GameState.spirit_purchased.connect(_on_spirit_purchased)
