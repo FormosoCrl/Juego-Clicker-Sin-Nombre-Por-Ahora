@@ -2,8 +2,8 @@ extends Control
 
 # ─── NODOS ────────────────────────────────────────────────────────────────────
 
-@onready var username_label: Label = $VBox/Header/UsernameLabel
-@onready var uid_label: Label = $VBox/Header/UidLabel
+@onready var username_label: Label = $VBox/Header/HeaderInfo/UsernameLabel
+@onready var uid_label: Label = $VBox/Header/HeaderInfo/UidLabel
 @onready var logout_button: Button = $VBox/Header/LogoutButton
 @onready var roster_count_label: Label = $VBox/RosterCountLabel
 @onready var character_list: VBoxContainer = $VBox/ScrollContainer/CharacterList
