@@ -23,32 +23,28 @@ layout_mode = 2
 
 [node name="HeaderInner" type="HBoxContainer" parent="Root/HeaderBar" unique_id=1000000004]
 layout_mode = 2
-theme_override_constants/separation = 8
-theme_override_constants/margin_left = 12
-theme_override_constants/margin_right = 12
-theme_override_constants/margin_top = 8
-theme_override_constants/margin_bottom = 8
+theme_override_constants/separation = 10
 
 [node name="UserIcon" type="Label" parent="Root/HeaderBar/HeaderInner" unique_id=1000000005]
 layout_mode = 2
 text = "👤"
-theme_override_font_sizes/font_size = 22
+theme_override_font_sizes/font_size = 28
 vertical_alignment = 1
 
 [node name="UserInfo" type="VBoxContainer" parent="Root/HeaderBar/HeaderInner" unique_id=1000000006]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 0
+theme_override_constants/separation = 2
 
 [node name="UsernameLabel" type="Label" parent="Root/HeaderBar/HeaderInner/UserInfo" unique_id=1000000007]
 layout_mode = 2
 text = "Jugador"
-theme_override_font_sizes/font_size = 15
+theme_override_font_sizes/font_size = 22
 
 [node name="UidLabel" type="Label" parent="Root/HeaderBar/HeaderInner/UserInfo" unique_id=1000000008]
 layout_mode = 2
 text = ""
-modulate = Color(1, 1, 1, 0.4)
+modulate = Color(1, 1, 1, 0.35)
 theme_override_font_sizes/font_size = 10
 
 [node name="LogoutButton" type="Button" parent="Root/HeaderBar/HeaderInner" unique_id=1000000009]
@@ -56,17 +52,105 @@ layout_mode = 2
 text = "Salir"
 theme_override_font_sizes/font_size = 12
 
-[node name="StatsBar" type="HBoxContainer" parent="Root" unique_id=1000000010]
+[node name="FilterBar" type="VBoxContainer" parent="Root" unique_id=1000000040]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 4
 
-[node name="RosterStat" type="Label" parent="Root/StatsBar" unique_id=1000000011]
+[node name="FilterPad" type="MarginContainer" parent="Root/FilterBar" unique_id=1000000041]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_bottom = 2
+
+[node name="FilterInner" type="VBoxContainer" parent="Root/FilterBar/FilterPad" unique_id=1000000042]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="SearchRow" type="HBoxContainer" parent="Root/FilterBar/FilterPad/FilterInner" unique_id=1000000043]
+layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="SearchInput" type="LineEdit" parent="Root/FilterBar/FilterPad/FilterInner/SearchRow" unique_id=1000000044]
 layout_mode = 2
 size_flags_horizontal = 3
-horizontal_alignment = 1
-text = "0 personajes"
-modulate = Color(1, 1, 1, 0.6)
+placeholder_text = "Buscar por nombre..."
+theme_override_font_sizes/font_size = 12
+
+[node name="RosterStat" type="Label" parent="Root/FilterBar/FilterPad/FilterInner/SearchRow" unique_id=1000000011]
+layout_mode = 2
+text = "0"
+modulate = Color(1, 1, 1, 0.5)
 theme_override_font_sizes/font_size = 11
+vertical_alignment = 1
+
+[node name="RarityRow" type="HBoxContainer" parent="Root/FilterBar/FilterPad/FilterInner" unique_id=1000000045]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="BtnTodos" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000046]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Todos"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+button_pressed = true
+
+[node name="BtnComun" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000047]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "C"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(0.65, 0.65, 0.65, 1)
+
+[node name="BtnEspecial" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000048]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "E"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(0.35, 0.75, 0.35, 1)
+
+[node name="BtnRaro" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000049]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "R"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(0.25, 0.55, 1.0, 1)
+
+[node name="BtnEpico" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000050]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Ép"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(0.65, 0.25, 1.0, 1)
+
+[node name="BtnLegendario" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000051]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "L"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(1.0, 0.65, 0.05, 1)
+
+[node name="BtnMitico" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000052]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "M"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(1.0, 0.25, 0.25, 1)
+
+[node name="BtnMilagro" type="Button" parent="Root/FilterBar/FilterPad/FilterInner/RarityRow" unique_id=1000000053]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mi"
+theme_override_font_sizes/font_size = 10
+toggle_mode = true
+modulate = Color(1.0, 0.88, 0.35, 1)
 
 [node name="ScrollContainer" type="ScrollContainer" parent="Root" unique_id=1000000012]
 layout_mode = 2
@@ -75,7 +159,7 @@ size_flags_vertical = 3
 [node name="CharacterList" type="VBoxContainer" parent="Root/ScrollContainer" unique_id=1000000013]
 layout_mode = 2
 size_flags_horizontal = 3
-theme_override_constants/separation = 2
+theme_override_constants/separation = 1
 
 [node name="DetailPanel" type="Panel" parent="." unique_id=1000000020]
 layout_mode = 1
@@ -85,9 +169,9 @@ anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
 offset_left = -200.0
-offset_top = -210.0
+offset_top = -220.0
 offset_right = 200.0
-offset_bottom = 210.0
+offset_bottom = 220.0
 visible = false
 
 [node name="PanelVBox" type="VBoxContainer" parent="DetailPanel" unique_id=1000000021]
@@ -176,7 +260,20 @@ autowrap_mode = 3
 theme_override_font_sizes/font_size = 11
 modulate = Color(1, 1, 1, 0.8)
 
-[node name="CloseButton" type="Button" parent="DetailPanel/PanelVBox/ContentPad/ContentVBox" unique_id=1000000036]
+[node name="ButtonRow" type="HBoxContainer" parent="DetailPanel/PanelVBox/ContentPad/ContentVBox" unique_id=1000000060]
 layout_mode = 2
+theme_override_constants/separation = 6
+
+[node name="DeleteButton" type="Button" parent="DetailPanel/PanelVBox/ContentPad/ContentVBox/ButtonRow" unique_id=1000000061]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "🗑 Eliminar cadáver"
+theme_override_font_sizes/font_size = 12
+modulate = Color(1, 0.4, 0.4, 1)
+visible = false
+
+[node name="CloseButton" type="Button" parent="DetailPanel/PanelVBox/ContentPad/ContentVBox/ButtonRow" unique_id=1000000036]
+layout_mode = 2
+size_flags_horizontal = 3
 text = "Cerrar"
 theme_override_font_sizes/font_size = 12
