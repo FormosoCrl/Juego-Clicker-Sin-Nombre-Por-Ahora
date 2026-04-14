@@ -102,6 +102,7 @@ func save_session() -> void:
 	var data: Dictionary = {
 		"refresh_token": _refresh_token,
 		"uid": _uid,
+		"email": current_email,
 	}
 	var file := FileAccess.open(SESSION_FILE, FileAccess.WRITE)
 	if file:
@@ -121,6 +122,7 @@ func load_session() -> bool:
 		return false
 	_refresh_token = parsed.get("refresh_token", "")
 	_uid = parsed.get("uid", "")
+	current_email = parsed.get("email", "")
 	if _refresh_token == "" or _uid == "":
 		return false
 	return true
